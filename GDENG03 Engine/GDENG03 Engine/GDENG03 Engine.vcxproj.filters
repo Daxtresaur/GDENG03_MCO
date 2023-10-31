@@ -186,7 +186,12 @@
     <ClCompile Include="EngineProfiler.cpp">
       <Filter>Engine\User Interface</Filter>
     </ClCompile>
-    <ClCompile Include="SceneCamera.cpp" />
+    <ClCompile Include="SceneCamera.cpp">
+      <Filter>Engine\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="GameCamera.cpp">
+      <Filter>Engine\Camera</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AppWindow.h">
@@ -318,7 +323,12 @@
     <ClInclude Include="EngineProfiler.h">
       <Filter>Engine\User Interface</Filter>
     </ClInclude>
-    <ClInclude Include="SceneCamera.h" />
+    <ClInclude Include="SceneCamera.h">
+      <Filter>Engine\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="GameCamera.h">
+      <Filter>Engine\Camera</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="VertexShader.hlsl">

@@ -2,6 +2,7 @@
 #include"TimeManager.h"
 #include"ACube.h"
 #include"APlane.h"
+#include"GameCamera.h"
 #include"GlobalProperties.h"
 #include"AGraphicsEngine.h"
 #include<iostream>
@@ -97,6 +98,21 @@ void GameObjectManager::createObject(PrimitiveType primitive_type, void* shader_
 	}
 	break;
 
+	case GAME_CAMERA: {
+		int cameraCount = -1;
+		AGameObject* camera = nullptr;
+		do {
+			cameraCount++;
+			newName = "Camera " + std::to_string(cameraCount);
+			camera = mGameObjectTable[newName];
+		} while (camera);
+
+		GameCamera* newCamera = new GameCamera(newName, shader_byte_code, shader_size);
+		addObject(newCamera);
+		std::cout << newCamera->getObjectName() << " spawned." << std::endl;
+	}
+	break;
+
 	}
 }
 
@@ -138,6 +154,23 @@ void GameObjectManager::createObject(PrimitiveType primitive_type) {
 		APlane* newPlane = new APlane(newName, shaderByteCode, shaderSize);
 		addObject(newPlane);
 		std::cout << newPlane->getObjectName() << " spawned." << std::endl;
+		AGraphicsEngine::getInstance()->releaseCompiledVertexShader();
+	}
+	break;
+
+	case GAME_CAMERA: {
+		int cameraCount = -1;
+		AGameObject* camera = nullptr;
+		do {
+			cameraCount++;
+			newName = "Camera " + std::to_string(cameraCount);
+			camera = mGameObjectTable[newName];
+		} while (camera);
+
+		AGraphicsEngine::getInstance()->compileVertexShader(L"VertexShader.hlsl", "vsmain", &shaderByteCode, &shaderSize);
+		GameCamera* newCamera = new GameCamera(newName, shaderByteCode, shaderSize);
+		addObject(newCamera);
+		std::cout << newCamera->getObjectName() << " spawned." << std::endl;
 		AGraphicsEngine::getInstance()->releaseCompiledVertexShader();
 	}
 	break;

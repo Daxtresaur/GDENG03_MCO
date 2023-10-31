@@ -17,16 +17,65 @@ Matrix4x4 ACamera::getViewMatrix() {
 	return viewMatrix;
 }
 
-void ACamera::setOrthographicProjectionMatrix(float width, float height, float near_plane, float far_plane) {
-	mProjectionMatrix.setOrthographicProjection(width, height, near_plane, far_plane);
+void ACamera::setProjection(bool is_perspective) {
+	mIsPerspective = is_perspective;
 }
 
-void ACamera::setPerspectiveProjectionMatrix(float field_of_view, float aspect, float near_plane, float far_plane) {
-	mProjectionMatrix.setPerspectiveProjection(field_of_view, aspect, near_plane, far_plane);
+void ACamera::setOrthographicProjectionMatrix(float width, float height, float near_plane, float far_plane) {
+	mProjectionMatrix.setOrthographicProjection(width, height, near_plane, far_plane);
+	setProjection(false);
+	setViewportDimensions((int)width, (int)height);
+	setClippingPlanes(near_plane, far_plane);
+}
+
+void ACamera::setPerspectiveProjectionMatrix(float field_of_view, float width, float height, float near_plane, float far_plane) {
+	mProjectionMatrix.setPerspectiveProjection(field_of_view, width / height, near_plane, far_plane);
+	setProjection(true);
+	setFieldOfView(field_of_view);
+	setViewportDimensions((int)width, (int)height);
+	setClippingPlanes(near_plane, far_plane);
+}
+
+void ACamera::setViewportDimensions(int width, int height) {
+	mViewportWidth = width;
+	mViewportHeight = height;
+}
+
+void ACamera::setClippingPlanes(float near_plane, float far_plane) {
+	mNearPlane = near_plane;
+	mFarPlane = far_plane;
+}
+
+void ACamera::setFieldOfView(float field_of_view) {
+	mFieldOfView = field_of_view;
 }
 
 Matrix4x4 ACamera::getProjectionMatrix() {
 	return mProjectionMatrix;
+}
+
+bool ACamera::isPerspective() {
+	return mIsPerspective;
+}
+
+int ACamera::getViewportWidth() {
+	return mViewportWidth;
+}
+
+int ACamera::getViewportHeight() {
+	return mViewportHeight;
+}
+
+float ACamera::getNearPlane() {
+	return mNearPlane;
+}
+
+float ACamera::getFarPlane() {
+	return mFarPlane;
+}
+
+float ACamera::getFieldOfView() {
+	return mFieldOfView;
 }
 
 void ACamera::onPress(int key) {
@@ -99,5 +148,3 @@ void ACamera::onRMBPress(const Point mouse_position) {
 void ACamera::onRMBRelease(const Point mouse_position) {
 	std::cout << "Right mouse button has been released." << std::endl;
 }
-
-void ACamera::draw(int width, int height, AVertexShader* vertex_shader, APixelShader* pixel_shader) {}

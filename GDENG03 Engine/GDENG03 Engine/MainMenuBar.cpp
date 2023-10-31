@@ -22,9 +22,12 @@ void MainMenuBar::draw() {
 		if (ImGui::MenuItem("Create Plane")) {
 			GameObjectManager::getInstance()->createObject(GameObjectManager::PLANE);
 		}
-		if (ImGui::BeginMenu("Light")) {
+		if (ImGui::BeginMenu("Create Light")) {
 			if (ImGui::MenuItem("Point Light")) {}
 			ImGui::EndMenu();
+		}
+		if (ImGui::MenuItem("Create Camera")) {
+			GameObjectManager::getInstance()->createObject(GameObjectManager::GAME_CAMERA);
 		}
 		ImGui::EndMenu();
 	}

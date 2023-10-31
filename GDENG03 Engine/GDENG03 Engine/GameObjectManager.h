@@ -12,7 +12,8 @@ public:
 
 	enum PrimitiveType {
 		CUBE,
-		PLANE
+		PLANE,
+		GAME_CAMERA
 	};
 
 	static GameObjectManager* getInstance();
