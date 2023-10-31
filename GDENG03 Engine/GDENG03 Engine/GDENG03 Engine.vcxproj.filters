@@ -186,6 +186,7 @@
     <ClCompile Include="EngineProfiler.cpp">
       <Filter>Engine\User Interface</Filter>
     </ClCompile>
+    <ClCompile Include="SceneCamera.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AppWindow.h">
@@ -317,6 +318,7 @@
     <ClInclude Include="EngineProfiler.h">
       <Filter>Engine\User Interface</Filter>
     </ClInclude>
+    <ClInclude Include="SceneCamera.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="VertexShader.hlsl">

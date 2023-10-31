@@ -12,7 +12,7 @@ void SceneCameraManager::destroy() {
 	delete instance->mSceneCamera;
 }
 
-void SceneCameraManager::setSceneCamera(ACamera* scene_camera) {
+void SceneCameraManager::setSceneCamera(SceneCamera* scene_camera) {
 	mSceneCamera = scene_camera;
 }
 

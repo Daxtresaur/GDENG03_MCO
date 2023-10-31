@@ -16,6 +16,7 @@
 #include"ACube.h"
 #include"APlane.h"
 #include"ACamera.h"
+#include"SceneCamera.h"
 #include"Vertex.h"
 #include"Matrix4x4.h"
 #include"Randomizer.h"

@@ -9,7 +9,7 @@ public:
 	ACamera(std::string name);
 	~ACamera();
 
-	void update(float delta_time) override;
+	virtual void update(float delta_time) = 0;
 	Matrix4x4 getViewMatrix();
 
 	void setOrthographicProjectionMatrix(float width, float height, float near_plane, float far_plane);
