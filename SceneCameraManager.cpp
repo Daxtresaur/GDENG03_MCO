@@ -25,7 +25,7 @@ Matrix4x4 SceneCameraManager::getSceneCameraViewMatrix() {
 }
 
 Matrix4x4 SceneCameraManager::getSceneCameraProjectionMatrix() {
-	return mSceneCamera->getViewMatrix();
+	return mSceneCamera->getProjectionMatrix();
 }
 
 SceneCameraManager::SceneCameraManager() {}

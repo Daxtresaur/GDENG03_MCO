@@ -29,6 +29,7 @@ public:
 	void rotate(int axisOfRotation, float theta);
 
 	Vector3D getZDirection();
+	Vector3D getYDirection();
 	Vector3D getXDirection();
 	Vector3D getTranslation();
 
