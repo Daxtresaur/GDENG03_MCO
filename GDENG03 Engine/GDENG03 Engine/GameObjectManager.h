@@ -36,8 +36,6 @@ public:
 	AGameObject* getSelectedObject();
 	void deselectObject();
 
-	void setVertexShaderProperties(void* shader_byte_code, size_t shader_size);
-
 private:
 	GameObjectManager();
 	~GameObjectManager();
@@ -49,7 +47,4 @@ private:
 	std::unordered_map<std::string, AGameObject*> mGameObjectTable;
 
 	AGameObject* mCurrentSelectedObject = nullptr;
-
-	void* mVertexShaderByteCode = nullptr;
-	size_t mShaderSize = 0;
 };

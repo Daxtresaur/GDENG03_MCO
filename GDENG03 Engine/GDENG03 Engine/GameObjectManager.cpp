@@ -3,6 +3,7 @@
 #include"ACube.h"
 #include"APlane.h"
 #include"GlobalProperties.h"
+#include"AGraphicsEngine.h"
 #include<iostream>
 
 GameObjectManager* GameObjectManager::instance = nullptr;
@@ -101,6 +102,8 @@ void GameObjectManager::createObject(PrimitiveType primitive_type, void* shader_
 
 void GameObjectManager::createObject(PrimitiveType primitive_type) {
 	std::string newName = "";
+	void* shaderByteCode = nullptr;
+	size_t shaderSize = 0;
 
 	switch (primitive_type) {
 	case CUBE: {
@@ -113,9 +116,11 @@ void GameObjectManager::createObject(PrimitiveType primitive_type) {
 		}
 		while (cube);
 
-		ACube* newCube = new ACube(newName, mVertexShaderByteCode, mShaderSize);
+		AGraphicsEngine::getInstance()->compileVertexShader(L"VertexShader.hlsl", "vsmain", &shaderByteCode, &shaderSize);
+		ACube* newCube = new ACube(newName, shaderByteCode, shaderSize);
 		addObject(newCube);
 		std::cout << newCube->getObjectName() << " spawned." << std::endl;
+		AGraphicsEngine::getInstance()->releaseCompiledVertexShader();
 	}
 	break;
 
@@ -129,9 +134,11 @@ void GameObjectManager::createObject(PrimitiveType primitive_type) {
 		}
 		while (plane);
 
-		APlane* newPlane = new APlane(newName, mVertexShaderByteCode, mShaderSize);
+		AGraphicsEngine::getInstance()->compileVertexShader(L"VertexShader.hlsl", "vsmain", &shaderByteCode, &shaderSize);
+		APlane* newPlane = new APlane(newName, shaderByteCode, shaderSize);
 		addObject(newPlane);
 		std::cout << newPlane->getObjectName() << " spawned." << std::endl;
+		AGraphicsEngine::getInstance()->releaseCompiledVertexShader();
 	}
 	break;
 
@@ -175,11 +182,6 @@ void GameObjectManager::deselectObject() {
 		mCurrentSelectedObject->deselect();
 		mCurrentSelectedObject = nullptr;
 	}
-}
-
-void GameObjectManager::setVertexShaderProperties(void* shader_byte_code, size_t shader_size) {
-	mVertexShaderByteCode = shader_byte_code;
-	mShaderSize = shader_size;
 }
 
 GameObjectManager::GameObjectManager() {

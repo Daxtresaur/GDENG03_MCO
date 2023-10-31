@@ -53,7 +53,7 @@ bool AWindow::initialize() {
 	mWindowHandle = ::CreateWindowEx(
 		WS_EX_OVERLAPPEDWINDOW,
 		L"AWindowClass",
-		L"FILOTEO HO: UI Manager & Game Object Manager",
+		L"Group 4: Camera as a Modifiable Game Object",
 		WS_OVERLAPPED | WS_MINIMIZEBOX | WS_SYSMENU,
 		CW_USEDEFAULT,
 		CW_USEDEFAULT,

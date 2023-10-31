@@ -1,7 +1,7 @@
 /*
-Nathaniel Francis S. Filoteo
+Group 4: Camera as a Modifiable Game Object
 GDENG03 X22
-HO -- UI Manager & Game Object Manager
+MCO: Game Engine Feature Replication
 */
 
 #include"AppWindow.h"
