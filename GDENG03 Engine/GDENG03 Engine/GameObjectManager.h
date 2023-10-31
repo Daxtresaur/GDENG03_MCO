@@ -5,6 +5,7 @@
 #include<unordered_map>
 #include"AVertexShader.h"
 #include"APixelShader.h"
+#include"GameCamera.h"
 
 class GameObjectManager
 {
@@ -37,6 +38,8 @@ public:
 	AGameObject* getSelectedObject();
 	void deselectObject();
 
+	GameCamera* getSelectedCamera();
+
 private:
 	GameObjectManager();
 	~GameObjectManager();
@@ -46,6 +49,7 @@ private:
 
 	std::vector<AGameObject*> mGameObjectList;
 	std::unordered_map<std::string, AGameObject*> mGameObjectTable;
+	std::unordered_map<std::string, GameCamera*> mCameraTable;
 
 	AGameObject* mCurrentSelectedObject = nullptr;
 };

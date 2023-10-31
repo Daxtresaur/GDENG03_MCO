@@ -1,6 +1,7 @@
 #include"InspectorWindow.h"
 #include"GlobalProperties.h"
 #include"GameObjectManager.h"
+#include"SceneCameraManager.h"
 #include"AngleConverter.h"
 
 InspectorWindow::InspectorWindow(std::string name) : AUIPanel::AUIPanel(name) {}
@@ -9,11 +10,8 @@ InspectorWindow::~InspectorWindow() {}
 
 void InspectorWindow::draw() {
 	ImGuiWindowFlags windowFlags = 0;
-	windowFlags |= ImGuiWindowFlags_NoResize;
 
 	ImGui::Begin("Inspector Window", NULL, windowFlags);
-	ImGui::SetWindowSize(ImVec2(300, GlobalProperties::WINDOW_HEIGHT - 64));
-	ImGui::SetWindowPos(ImVec2(GlobalProperties::WINDOW_WIDTH - 321, 20));
 
 	if (!GameObjectManager::getInstance()->getSelectedObject()) {
 		ImGui::TextWrapped("No object selected. Select an object from the scene.");
@@ -31,6 +29,40 @@ void InspectorWindow::draw() {
 		ImGui::DragFloat3("Position", mObjectPosition, 0.25f);
 		ImGui::DragFloat3("Rotation", mObjectRotation, 1.f, 0.f, 360.f);
 		ImGui::DragFloat3("Scale", mObjectScale, 0.25f, 0.f, 100.f);
+
+		if (GameObjectManager::getInstance()->getSelectedCamera()) {
+			GameCamera* selectedCamera = GameObjectManager::getInstance()->getSelectedCamera();
+			bool isPerspective = selectedCamera->isPerspective();
+			float fov = selectedCamera->getFieldOfView();
+			int dimensions[2] = { selectedCamera->getViewportWidth(), selectedCamera->getViewportHeight() };
+			float planes[2] = { selectedCamera->getNearPlane(), selectedCamera->getFarPlane() };
+
+			ImGui::Separator();
+			ImGui::Checkbox("Using Perspective Projection", &isPerspective);
+			ImGui::DragInt2("Viewport Width and Height", dimensions, 1, 0);
+			ImGui::DragFloat2("Near and Far Clipping Planes", planes, 0.25f);
+			if (isPerspective) ImGui::DragFloat("Field of View", &fov, 0.1f);
+
+			if (!isPerspective) {
+				selectedCamera->setOrthographicProjectionMatrix(
+					(float)dimensions[0],
+					(float)dimensions[1],
+					planes[0],
+					planes[1]
+				);
+			}
+			else {
+				selectedCamera->setPerspectiveProjectionMatrix(
+					fov,
+					(float)dimensions[0],
+					(float)dimensions[1],
+					planes[0],
+					planes[1]
+				);
+			}
+
+			if (ImGui::Button("Align with Scene View")) updateObjectInfo(SceneCameraManager::getInstance()->getSceneCamera());
+		}
 
 		selectedObject->setActive(mIsSelectedObjectActive);
 		selectedObject->setScale(mObjectScale[0], mObjectScale[1], mObjectScale[2]);

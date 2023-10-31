@@ -259,3 +259,17 @@ void GameCamera::draw(int width, int height, AVertexShader* vertex_shader, APixe
 
 	AGraphicsEngine::getInstance()->getImmediateDeviceContext()->drawIndexedTriangleList(mIndexBuffer->getIndexCount(), 0, 0);
 }
+
+void GameCamera::onPress(int key) {}
+
+void GameCamera::onRelease(int key) {}
+
+void GameCamera::onMouseMove(const Point delta_position) {}
+
+void GameCamera::onLMBPress(const Point mouse_position) {}
+
+void GameCamera::onLMBRelease(const Point mouse_position) {}
+
+void GameCamera::onRMBPress(const Point mouse_position) {}
+
+void GameCamera::onRMBRelease(const Point mouse_position) {}

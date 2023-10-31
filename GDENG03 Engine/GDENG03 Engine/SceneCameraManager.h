@@ -10,6 +10,7 @@ public:
 	void setSceneCamera(SceneCamera* scene_camera);
 	void update();
 
+	SceneCamera* getSceneCamera();
 	Matrix4x4 getSceneCameraViewMatrix();
 	Matrix4x4 getSceneCameraProjectionMatrix();
 

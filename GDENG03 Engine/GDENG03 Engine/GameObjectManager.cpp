@@ -2,7 +2,6 @@
 #include"TimeManager.h"
 #include"ACube.h"
 #include"APlane.h"
-#include"GameCamera.h"
 #include"GlobalProperties.h"
 #include"AGraphicsEngine.h"
 #include<iostream>
@@ -18,6 +17,7 @@ void GameObjectManager::initialize() {
 }
 
 void GameObjectManager::destroy() {
+	instance->mCameraTable.clear();
 	instance->mGameObjectTable.clear();
 
 	for (int i = 0; i < instance->mGameObjectList.size(); i++) {
@@ -109,6 +109,7 @@ void GameObjectManager::createObject(PrimitiveType primitive_type, void* shader_
 
 		GameCamera* newCamera = new GameCamera(newName, shader_byte_code, shader_size);
 		addObject(newCamera);
+		mCameraTable[newName] = newCamera;
 		std::cout << newCamera->getObjectName() << " spawned." << std::endl;
 	}
 	break;
@@ -170,6 +171,7 @@ void GameObjectManager::createObject(PrimitiveType primitive_type) {
 		AGraphicsEngine::getInstance()->compileVertexShader(L"VertexShader.hlsl", "vsmain", &shaderByteCode, &shaderSize);
 		GameCamera* newCamera = new GameCamera(newName, shaderByteCode, shaderSize);
 		addObject(newCamera);
+		mCameraTable[newName] = newCamera;
 		std::cout << newCamera->getObjectName() << " spawned." << std::endl;
 		AGraphicsEngine::getInstance()->releaseCompiledVertexShader();
 	}
@@ -180,6 +182,7 @@ void GameObjectManager::createObject(PrimitiveType primitive_type) {
 
 void GameObjectManager::deleteObject(AGameObject* game_object) {
 	std::string key = game_object->getObjectName();
+	if (mCameraTable[key]) mCameraTable.erase(key);
 	mGameObjectTable.erase(key);
 	mGameObjectList.erase(std::remove(mGameObjectList.begin(), mGameObjectList.end(), game_object), mGameObjectList.end());
 	mGameObjectList.shrink_to_fit();
@@ -215,6 +218,13 @@ void GameObjectManager::deselectObject() {
 		mCurrentSelectedObject->deselect();
 		mCurrentSelectedObject = nullptr;
 	}
+}
+
+GameCamera* GameObjectManager::getSelectedCamera() {
+	if (!mCurrentSelectedObject) return nullptr;
+
+	GameCamera* camera = mCameraTable[mCurrentSelectedObject->getObjectName()];
+	return camera;
 }
 
 GameObjectManager::GameObjectManager() {

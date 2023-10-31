@@ -27,13 +27,13 @@ public:
 	float getFarPlane();
 	float getFieldOfView();
 
-	void onPress(int key) override;
-	void onRelease(int key) override;
-	void onMouseMove(const Point delta_position) override;
-	void onLMBPress(const Point mouse_position) override;
-	void onLMBRelease(const Point mouse_position) override;
-	void onRMBPress(const Point mouse_position) override;
-	void onRMBRelease(const Point mouse_position) override;
+	virtual void onPress(int key) = 0;
+	virtual void onRelease(int key) = 0;
+	virtual void onMouseMove(const Point delta_position) = 0;
+	virtual void onLMBPress(const Point mouse_position) = 0;
+	virtual void onLMBRelease(const Point mouse_position) = 0;
+	virtual void onRMBPress(const Point mouse_position) = 0;
+	virtual void onRMBRelease(const Point mouse_position) = 0;
 
 	virtual void draw(int width, int height, AVertexShader* vertex_shader, APixelShader* pixel_shader) = 0;
 

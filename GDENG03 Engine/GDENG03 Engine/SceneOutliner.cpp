@@ -12,7 +12,7 @@ void SceneOutliner::draw() {
 
 	ImGui::Begin("Scene Outliner", NULL, windowFlags);
 	ImGui::SetWindowSize(ImVec2(300, GlobalProperties::WINDOW_HEIGHT - 64));
-	ImGui::SetWindowPos(ImVec2(GlobalProperties::WINDOW_WIDTH - 622, 20));
+	ImGui::SetWindowPos(ImVec2(GlobalProperties::WINDOW_WIDTH - 321, 20));
 
 	std::vector<AGameObject*> objectList = GameObjectManager::getInstance()->getAllGameObjects();
 	for (int i = 0; i < objectList.size(); i++) {

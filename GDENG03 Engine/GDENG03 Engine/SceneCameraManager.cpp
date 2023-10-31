@@ -20,6 +20,10 @@ void SceneCameraManager::update() {
 	mSceneCamera->update(TimeManager::getDeltaTime());
 }
 
+SceneCamera* SceneCameraManager::getSceneCamera() {
+	return mSceneCamera;
+}
+
 Matrix4x4 SceneCameraManager::getSceneCameraViewMatrix() {
 	return mSceneCamera->getViewMatrix();
 }
