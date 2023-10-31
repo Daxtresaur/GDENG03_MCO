@@ -12,6 +12,7 @@
 #include "MathUtils.h"
 #include "Matrix4x4.h"
 #include "SceneCameraManager.h"
+#include"SceneCamera.h"
 
 
 void AppWindow::onCreate()
@@ -30,7 +31,7 @@ void AppWindow::onCreate()
 	std::cout << "hwnd: " << this->m_hwnd;
 	m_swap_chain->init(this->m_hwnd, width, height);
 
-	Camera* sceneCamera = new Camera("UnregisteredHyperCam2");
+	SceneCamera* sceneCamera = new SceneCamera("UnregisteredHyperCam2");
 	sceneCamera->setPosition(0.f, 0.f, 0.f);
 	sceneCamera->setRotation(0.f, 0.f, 0.f);
 	sceneCamera->setPerspectiveProjectionMatrix(1.57f, (float)width / (float)height, 0.1f, 100.f);

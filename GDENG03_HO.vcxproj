@@ -163,6 +163,7 @@
     <ClCompile Include="AGameObject.cpp" />
     <ClCompile Include="Point.cpp" />
     <ClCompile Include="Quad.cpp" />
+    <ClCompile Include="SceneCamera.cpp" />
     <ClCompile Include="SceneCameraManager.cpp" />
     <ClCompile Include="SceneOutliner.cpp" />
     <ClCompile Include="SwapChain.cpp" />
@@ -204,6 +205,7 @@
     <ClInclude Include="AGameObject.h" />
     <ClInclude Include="Point.h" />
     <ClInclude Include="Quad.h" />
+    <ClInclude Include="SceneCamera.h" />
     <ClInclude Include="SceneCameraManager.h" />
     <ClInclude Include="SceneOutliner.h" />
     <ClInclude Include="SwapChain.h" />
