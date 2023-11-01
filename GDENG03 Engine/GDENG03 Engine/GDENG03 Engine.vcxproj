@@ -147,7 +147,9 @@
     <ClCompile Include="EngineProfiler.cpp" />
     <ClCompile Include="GameCamera.cpp" />
     <ClCompile Include="GameObjectManager.cpp" />
+    <ClCompile Include="GameViewWindow.cpp" />
     <ClCompile Include="GlobalProperties.cpp" />
+    <ClCompile Include="GWindow.cpp" />
     <ClCompile Include="imgui\imgui.cpp" />
     <ClCompile Include="imgui\imgui_demo.cpp" />
     <ClCompile Include="imgui\imgui_draw.cpp" />
@@ -194,7 +196,9 @@
     <ClInclude Include="EngineProfiler.h" />
     <ClInclude Include="GameCamera.h" />
     <ClInclude Include="GameObjectManager.h" />
+    <ClInclude Include="GameViewWindow.h" />
     <ClInclude Include="GlobalProperties.h" />
+    <ClInclude Include="GWindow.h" />
     <ClInclude Include="imgui\imconfig.h" />
     <ClInclude Include="imgui\imgui.h" />
     <ClInclude Include="imgui\imgui_impl_dx11.h" />

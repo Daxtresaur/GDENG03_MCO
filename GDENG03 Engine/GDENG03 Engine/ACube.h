@@ -13,7 +13,7 @@ public:
 	~ACube();
 
 	void update(float delta_time) override;
-	void draw(int width, int height, AVertexShader* vertex_shader, APixelShader* pixel_shader) override;
+	void draw(int width, int height, AVertexShader* vertex_shader, APixelShader* pixel_shader, Matrix4x4 view_matrix, Matrix4x4 projection_matrix) override;
 	void setTranslationSpeed(float translation_speed);
 	void setRotationSpeed(float rotation_speed);
 	void setScaleSpeed(float scale_speed);

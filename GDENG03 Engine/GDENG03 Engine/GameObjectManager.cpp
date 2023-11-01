@@ -5,6 +5,7 @@
 #include"GlobalProperties.h"
 #include"AGraphicsEngine.h"
 #include<iostream>
+#include"SceneCameraManager.h"
 
 GameObjectManager* GameObjectManager::instance = nullptr;
 
@@ -53,7 +54,27 @@ void GameObjectManager::update() {
 
 void GameObjectManager::render(int viewport_width, int viewport_height, AVertexShader* vertex_shader, APixelShader* pixel_shader) {
 	for (int i = 0; i < mGameObjectList.size(); i++) {
-		if (mGameObjectList[i]->isActive()) mGameObjectList[i]->draw(viewport_width, viewport_height, vertex_shader, pixel_shader);
+		if (mGameObjectList[i]->isActive()) mGameObjectList[i]->draw(
+			viewport_width,
+			viewport_height,
+			vertex_shader,
+			pixel_shader,
+			SceneCameraManager::getInstance()->getSceneCameraViewMatrix(),
+			SceneCameraManager::getInstance()->getSceneCameraProjectionMatrix()
+		);
+	}
+}
+
+void GameObjectManager::renderToGameCamera(int viewport_width, int viewport_height, AVertexShader* vertex_shader, APixelShader* pixel_shader, GameCamera* game_camera) {
+	for (int i = 0; i < mGameObjectList.size(); i++) {
+		if (mGameObjectList[i]->isActive()) mGameObjectList[i]->draw(
+			viewport_width,
+			viewport_height,
+			vertex_shader,
+			pixel_shader,
+			game_camera->getViewMatrix(),
+			game_camera->getProjectionMatrix()
+		);
 	}
 }
 

@@ -193,12 +193,12 @@ void APlane::update(float delta_time) {
 	}
 }
 
-void APlane::draw(int width, int height, AVertexShader* vertex_shader, APixelShader* pixel_shader) {
+void APlane::draw(int width, int height, AVertexShader* vertex_shader, APixelShader* pixel_shader, Matrix4x4 view_matrix, Matrix4x4 projection_matrix) {
 	constant shaderNumbers;
 
 	shaderNumbers.worldMatrix = this->getLocalMatrix();
-	shaderNumbers.viewMatrix = SceneCameraManager::getInstance()->getSceneCameraViewMatrix();
-	shaderNumbers.projectionMatrix = SceneCameraManager::getInstance()->getSceneCameraProjectionMatrix();
+	shaderNumbers.viewMatrix = view_matrix;
+	shaderNumbers.projectionMatrix = projection_matrix;
 	shaderNumbers.coefficient = 0.f;
 
 	mConstantBuffer->update(AGraphicsEngine::getInstance()->getImmediateDeviceContext(), &shaderNumbers);

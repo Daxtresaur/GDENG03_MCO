@@ -27,6 +27,7 @@ public:
 	int getActiveObjectCount();
 	void update();
 	void render(int viewport_width, int viewport_height, AVertexShader* vertex_shader, APixelShader* pixel_shader);
+	void renderToGameCamera(int viewport_width, int viewport_height, AVertexShader* vertex_shader, APixelShader* pixel_shader, GameCamera* game_camera);
 	void addObject(AGameObject* game_object);
 	void createObject(PrimitiveType primitive_type, void* shader_byte_code, size_t shader_size);
 	void createObject(PrimitiveType primitive_type);
