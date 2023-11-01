@@ -5,8 +5,8 @@ ASwapChain::ASwapChain() {}
 
 ASwapChain::~ASwapChain() {}
 
-bool ASwapChain::initialize(HWND window_handle, UINT window_width, UINT window_height) {
-	ID3D11Device* device = AGraphicsEngine::getInstance()->mDevice;
+bool ASwapChain::initialize(HWND window_handle, UINT window_width, UINT window_height, bool is_scene_view) {
+	ID3D11Device* device = AGraphicsEngine::getInstance()->getD3DDevice(is_scene_view);
 
 	DXGI_SWAP_CHAIN_DESC desc;
 	ZeroMemory(&desc, sizeof(desc));
@@ -22,7 +22,9 @@ bool ASwapChain::initialize(HWND window_handle, UINT window_width, UINT window_h
 	desc.SampleDesc.Quality = 0;
 	desc.Windowed = TRUE;
 
-	HRESULT result = AGraphicsEngine::getInstance()->mdxgiFactory->CreateSwapChain(device, &desc, &mSwapChain);
+	HRESULT result = 0;
+	if (is_scene_view) result = AGraphicsEngine::getInstance()->mdxgiFactory->CreateSwapChain(device, &desc, &mSwapChain);
+	else result = AGraphicsEngine::getInstance()->mdxgiFactorySecondary->CreateSwapChain(device, &desc, &mSwapChain);
 	if (FAILED(result)) return false;
 
 	ID3D11Texture2D* buffer = NULL;

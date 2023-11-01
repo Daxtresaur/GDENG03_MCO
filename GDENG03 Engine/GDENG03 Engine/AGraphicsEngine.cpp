@@ -51,6 +51,31 @@ bool AGraphicsEngine::initialize() {
 	mdxgiDevice->GetParent(__uuidof(IDXGIAdapter), (void**)&mdxgiAdapter);
 	mdxgiAdapter->GetParent(__uuidof(IDXGIFactory), (void**)&mdxgiFactory);
 
+	result = 0;
+	for (UINT iType = 0; iType < typeCount;) {
+		result = D3D11CreateDevice(
+			NULL,
+			driverTypes[iType],
+			NULL,
+			NULL,
+			featureLevels,
+			featLvCount,
+			D3D11_SDK_VERSION,
+			&mDeviceSecondary,
+			mFeatureLevel,
+			&mInnerImmContextSecondary
+		);
+		if (SUCCEEDED(result)) break;
+
+		++iType;
+	}
+	if (FAILED(result)) return false;
+
+	mImmediateContextSecondary = new ADeviceContext(mInnerImmContextSecondary);
+	mDeviceSecondary->QueryInterface(__uuidof(IDXGIDevice), (void**)&mdxgiDeviceSecondary);
+	mdxgiDeviceSecondary->GetParent(__uuidof(IDXGIAdapter), (void**)&mdxgiAdapterSecondary);
+	mdxgiAdapterSecondary->GetParent(__uuidof(IDXGIFactory), (void**)&mdxgiFactorySecondary);
+
 	return true;
 }
 
@@ -61,6 +86,13 @@ bool AGraphicsEngine::release() {
 
 	mImmediateContext->release();
 	mDevice->Release();
+
+	mdxgiDeviceSecondary->Release();
+	mdxgiAdapterSecondary->Release();
+	mdxgiFactorySecondary->Release();
+
+	mImmediateContextSecondary->release();
+	mDeviceSecondary->Release();
 
 	return true;
 }
@@ -101,12 +133,14 @@ APixelShader* AGraphicsEngine::createPixelShader(const void* shader_byte_code, s
 	return pixelShader;
 }
 
-ID3D11Device* AGraphicsEngine::getD3DDevice() {
-	return mDevice;
+ID3D11Device* AGraphicsEngine::getD3DDevice(bool is_scene_view) {
+	if (is_scene_view) return mDevice;
+	else return mDeviceSecondary;
 }
 
-ADeviceContext* AGraphicsEngine::getImmediateDeviceContext() {
-	return mImmediateContext;
+ADeviceContext* AGraphicsEngine::getImmediateDeviceContext(bool is_scene_view) {
+	if (is_scene_view) return mImmediateContext;
+	else return mImmediateContextSecondary;
 }
 
 bool AGraphicsEngine::compileVertexShader(const wchar_t* file_name, const char* entry_point_name, void** shader_byte_code, size_t* byte_code_size) {

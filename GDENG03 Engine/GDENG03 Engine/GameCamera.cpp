@@ -239,7 +239,7 @@ void GameCamera::update(float delta_time) {
 	}
 }
 
-void GameCamera::draw(int width, int height, AVertexShader* vertex_shader, APixelShader* pixel_shader) {
+void GameCamera::draw(int width, int height, AVertexShader* vertex_shader, APixelShader* pixel_shader, bool is_scene_view) {
 	constant shaderNumbers;
 
 	shaderNumbers.worldMatrix = this->getLocalMatrix();
@@ -247,17 +247,17 @@ void GameCamera::draw(int width, int height, AVertexShader* vertex_shader, APixe
 	shaderNumbers.projectionMatrix = SceneCameraManager::getInstance()->getSceneCameraProjectionMatrix();
 	shaderNumbers.coefficient = 0.5f * (sin(mElapsedTime) + 1.f);
 
-	mConstantBuffer->update(AGraphicsEngine::getInstance()->getImmediateDeviceContext(), &shaderNumbers);
+	mConstantBuffer->update(AGraphicsEngine::getInstance()->getImmediateDeviceContext(is_scene_view), &shaderNumbers);
 
-	AGraphicsEngine::getInstance()->getImmediateDeviceContext()->setConstantBuffer(mConstantBuffer, vertex_shader);
-	AGraphicsEngine::getInstance()->getImmediateDeviceContext()->setConstantBuffer(mConstantBuffer, pixel_shader);
+	AGraphicsEngine::getInstance()->getImmediateDeviceContext(is_scene_view)->setConstantBuffer(mConstantBuffer, vertex_shader);
+	AGraphicsEngine::getInstance()->getImmediateDeviceContext(is_scene_view)->setConstantBuffer(mConstantBuffer, pixel_shader);
 
-	AGraphicsEngine::getInstance()->getImmediateDeviceContext()->setVertexShader(vertex_shader);
-	AGraphicsEngine::getInstance()->getImmediateDeviceContext()->setPixelShader(pixel_shader);
-	AGraphicsEngine::getInstance()->getImmediateDeviceContext()->setVertexBuffer(mVertexBuffer);
-	AGraphicsEngine::getInstance()->getImmediateDeviceContext()->setIndexBuffer(mIndexBuffer);
+	AGraphicsEngine::getInstance()->getImmediateDeviceContext(is_scene_view)->setVertexShader(vertex_shader);
+	AGraphicsEngine::getInstance()->getImmediateDeviceContext(is_scene_view)->setPixelShader(pixel_shader);
+	AGraphicsEngine::getInstance()->getImmediateDeviceContext(is_scene_view)->setVertexBuffer(mVertexBuffer);
+	AGraphicsEngine::getInstance()->getImmediateDeviceContext(is_scene_view)->setIndexBuffer(mIndexBuffer);
 
-	AGraphicsEngine::getInstance()->getImmediateDeviceContext()->drawIndexedTriangleList(mIndexBuffer->getIndexCount(), 0, 0);
+	AGraphicsEngine::getInstance()->getImmediateDeviceContext(is_scene_view)->drawIndexedTriangleList(mIndexBuffer->getIndexCount(), 0, 0);
 }
 
 void GameCamera::onPress(int key) {}

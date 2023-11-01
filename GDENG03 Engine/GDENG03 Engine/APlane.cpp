@@ -193,7 +193,7 @@ void APlane::update(float delta_time) {
 	}
 }
 
-void APlane::draw(int width, int height, AVertexShader* vertex_shader, APixelShader* pixel_shader) {
+void APlane::draw(int width, int height, AVertexShader* vertex_shader, APixelShader* pixel_shader, bool is_scene_view) {
 	constant shaderNumbers;
 
 	shaderNumbers.worldMatrix = this->getLocalMatrix();
@@ -201,16 +201,16 @@ void APlane::draw(int width, int height, AVertexShader* vertex_shader, APixelSha
 	shaderNumbers.projectionMatrix = SceneCameraManager::getInstance()->getSceneCameraProjectionMatrix();
 	shaderNumbers.coefficient = 0.f;
 
-	mConstantBuffer->update(AGraphicsEngine::getInstance()->getImmediateDeviceContext(), &shaderNumbers);
+	mConstantBuffer->update(AGraphicsEngine::getInstance()->getImmediateDeviceContext(is_scene_view), &shaderNumbers);
 
-	AGraphicsEngine::getInstance()->getImmediateDeviceContext()->setConstantBuffer(mConstantBuffer, vertex_shader);
-	AGraphicsEngine::getInstance()->getImmediateDeviceContext()->setConstantBuffer(mConstantBuffer, pixel_shader);
+	AGraphicsEngine::getInstance()->getImmediateDeviceContext(is_scene_view)->setConstantBuffer(mConstantBuffer, vertex_shader);
+	AGraphicsEngine::getInstance()->getImmediateDeviceContext(is_scene_view)->setConstantBuffer(mConstantBuffer, pixel_shader);
 
-	AGraphicsEngine::getInstance()->getImmediateDeviceContext()->setVertexShader(vertex_shader);
-	AGraphicsEngine::getInstance()->getImmediateDeviceContext()->setPixelShader(pixel_shader);
-	AGraphicsEngine::getInstance()->getImmediateDeviceContext()->setVertexBuffer(mVertexBuffer);
+	AGraphicsEngine::getInstance()->getImmediateDeviceContext(is_scene_view)->setVertexShader(vertex_shader);
+	AGraphicsEngine::getInstance()->getImmediateDeviceContext(is_scene_view)->setPixelShader(pixel_shader);
+	AGraphicsEngine::getInstance()->getImmediateDeviceContext(is_scene_view)->setVertexBuffer(mVertexBuffer);
 
-	AGraphicsEngine::getInstance()->getImmediateDeviceContext()->drawTriangleStrip(mVertexBuffer->getVertexCount(), 0);
+	AGraphicsEngine::getInstance()->getImmediateDeviceContext(is_scene_view)->drawTriangleStrip(mVertexBuffer->getVertexCount(), 0);
 }
 
 void APlane::setTranslationSpeed(float translation_speed) {

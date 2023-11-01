@@ -20,7 +20,7 @@ void AppWindow::onCreate() {
 	RECT windowRect = this->getWindowRect();
 	UINT width = windowRect.right - windowRect.left;
 	UINT height = windowRect.bottom - windowRect.top;
-	mSwapChain->initialize(this->mWindowHandle, width, height);
+	mSwapChain->initialize(this->mWindowHandle, width, height, true);
 
 	SceneCamera* sceneCamera = new SceneCamera("UnregisteredHyperCam2");
 	sceneCamera->setPosition(0.f, 0.f, 0.f);
@@ -51,7 +51,7 @@ void AppWindow::onCreate() {
 void AppWindow::onUpdate() {
 	AWindow::onUpdate();
 
-	AGraphicsEngine::getInstance()->getImmediateDeviceContext()->clearRenderTargetColor(
+	AGraphicsEngine::getInstance()->getImmediateDeviceContext(true)->clearRenderTargetColor(
 		mSwapChain,
 		GlobalProperties::BACKGROUND_COLOR[0],
 		GlobalProperties::BACKGROUND_COLOR[1],
@@ -62,13 +62,13 @@ void AppWindow::onUpdate() {
 	RECT windowRect = this->getWindowRect();
 	UINT width = windowRect.right - windowRect.left;
 	UINT height = windowRect.bottom - windowRect.top;
-	AGraphicsEngine::getInstance()->getImmediateDeviceContext()->setViewportSize(width, height);
+	AGraphicsEngine::getInstance()->getImmediateDeviceContext(true)->setViewportSize(width, height);
 
 	InputManager::getInstance()->update();
 	SceneCameraManager::getInstance()->update();
 
 	GameObjectManager::getInstance()->update();
-	GameObjectManager::getInstance()->render(width, height, mVertexShader, mPixelShader);
+	GameObjectManager::getInstance()->render(width, height, mVertexShader, mPixelShader, true);
 	UIManager::getInstance()->draw();
 	mSwapChain->present(false);
 }

@@ -9,7 +9,7 @@ public:
 	ASwapChain();
 	~ASwapChain();
 
-	bool initialize(HWND window_handle, UINT window_width, UINT window_height);
+	bool initialize(HWND window_handle, UINT window_width, UINT window_height, bool is_scene_view);
 	bool release();
 	bool present(bool vsync);
 

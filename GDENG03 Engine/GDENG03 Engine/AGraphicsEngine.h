@@ -31,8 +31,8 @@ public:
 	void releaseCompiledVertexShader();
 	void releaseCompiledPixelShader();
 
-	ID3D11Device* getD3DDevice();
-	ADeviceContext* getImmediateDeviceContext();
+	ID3D11Device* getD3DDevice(bool is_scene_view);
+	ADeviceContext* getImmediateDeviceContext(bool is_scene_view);
 
 public:
 	static AGraphicsEngine* getInstance();
@@ -46,6 +46,14 @@ protected:
 	IDXGIAdapter* mdxgiAdapter;
 	IDXGIFactory* mdxgiFactory;
 	ID3D11DeviceContext* mInnerImmContext;
+
+	ID3D11Device* mDeviceSecondary;
+	ADeviceContext* mImmediateContextSecondary;
+
+	IDXGIDevice* mdxgiDeviceSecondary;
+	IDXGIAdapter* mdxgiAdapterSecondary;
+	IDXGIFactory* mdxgiFactorySecondary;
+	ID3D11DeviceContext* mInnerImmContextSecondary;
 
 	ID3DBlob* mVertexBlob = nullptr;
 	ID3DBlob* mPixelBlob = nullptr;

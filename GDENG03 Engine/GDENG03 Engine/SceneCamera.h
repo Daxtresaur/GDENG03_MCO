@@ -8,7 +8,7 @@ public:
 	~SceneCamera();
 
 	void update(float delta_time) override;
-	void draw(int width, int height, AVertexShader* vertex_shader, APixelShader* pixel_shader) override;
+	void draw(int width, int height, AVertexShader* vertex_shader, APixelShader* pixel_shader, bool is_scene_view) override;
 
 	void onPress(int key) override;
 	void onRelease(int key) override;

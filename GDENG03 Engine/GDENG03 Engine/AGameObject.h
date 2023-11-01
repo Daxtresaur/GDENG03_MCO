@@ -13,7 +13,7 @@ public:
 	~AGameObject();
 
 	virtual void update(float delta_time) = 0;
-	virtual void draw(int width, int height, AVertexShader* vertex_shader, APixelShader* pixel_shader) = 0;
+	virtual void draw(int width, int height, AVertexShader* vertex_shader, APixelShader* pixel_shader, bool is_scene_view) = 0;
 
 	std::string getObjectName();
 	bool isActive();

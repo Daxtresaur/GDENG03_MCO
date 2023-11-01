@@ -13,7 +13,7 @@ UIManager* UIManager::getInstance() {
 }
 
 void UIManager::initialize(HWND window_handle) {
-    instance = new UIManager(window_handle);
+    if (!instance) instance = new UIManager(window_handle);
 }
 
 void UIManager::destroy() {
@@ -48,8 +48,8 @@ UIManager::UIManager(HWND window_handle) {
 
     ImGui_ImplWin32_Init(window_handle);
     ImGui_ImplDX11_Init(
-        AGraphicsEngine::getInstance()->getD3DDevice(),
-        AGraphicsEngine::getInstance()->getImmediateDeviceContext()->getD3DDeviceContext()
+        AGraphicsEngine::getInstance()->getD3DDevice(true),
+        AGraphicsEngine::getInstance()->getImmediateDeviceContext(true)->getD3DDeviceContext()
     );
 
     MainMenuBar* mainMenuBar = new MainMenuBar("Toolbar");

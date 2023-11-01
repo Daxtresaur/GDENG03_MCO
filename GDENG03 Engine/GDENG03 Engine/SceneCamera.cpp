@@ -51,7 +51,7 @@ void SceneCamera::update(float delta_time) {
 	}
 }
 
-void SceneCamera::draw(int width, int height, AVertexShader* vertex_shader, APixelShader* pixel_shader) {}
+void SceneCamera::draw(int width, int height, AVertexShader* vertex_shader, APixelShader* pixel_shader, bool is_scene_view) {}
 
 void SceneCamera::onPress(int key) {
 	switch (key) {
