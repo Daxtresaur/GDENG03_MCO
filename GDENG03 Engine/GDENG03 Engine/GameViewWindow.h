@@ -1,5 +1,5 @@
 #pragma once
-#include"AWindow.h"
+#include"GWindow.h"
 #include"AGraphicsEngine.h"
 #include"GameObjectManager.h"
 #include"InputManager.h"
@@ -18,7 +18,7 @@
 #include"Matrix4x4.h"
 #include"Randomizer.h"
 
-class GameViewWindow : public AWindow
+class GameViewWindow : public GWindow
 {
 public:
 	GameViewWindow();

@@ -8,7 +8,7 @@ GameViewWindow::~GameViewWindow() {
 }
 
 void GameViewWindow::onCreate() {
-	AWindow::onCreate();
+	GWindow::onCreate();
 	mSwapChain = AGraphicsEngine::getInstance()->createSwapChain();
 
 	RECT windowRect = this->getWindowRect();
@@ -29,7 +29,7 @@ void GameViewWindow::onCreate() {
 }
 
 void GameViewWindow::onUpdate() {
-	AWindow::onUpdate();
+	GWindow::onUpdate();
 
 	if (GameObjectManager::getInstance()->getSelectedCamera()) {
 		AGraphicsEngine::getInstance()->getImmediateDeviceContext(false)->clearRenderTargetColor(
@@ -61,7 +61,7 @@ void GameViewWindow::onUpdate() {
 }
 
 void GameViewWindow::onDestroy() {
-	AWindow::onDestroy();
+	GWindow::onDestroy();
 	mSwapChain->release();
 	mVertexShader->release();
 	mPixelShader->release();
