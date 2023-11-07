@@ -31,6 +31,8 @@ LRESULT CALLBACK WndProc(HWND window_handle, UINT msg, WPARAM w_param, LPARAM l_
 }
 
 bool AWindow::initialize() {
+	HRESULT hr = CoInitializeEx(nullptr, COINIT_MULTITHREADED);
+
 	TimeManager::initialize();
 	WNDCLASSEX wc;
 	wc.cbClsExtra = NULL;

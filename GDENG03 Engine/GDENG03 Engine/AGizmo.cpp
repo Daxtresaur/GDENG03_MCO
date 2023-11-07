@@ -19,15 +19,15 @@ AGizmo::AGizmo(std::string name, void* shader_byte_code, size_t shader_size) : A
 	//CreateTexture
 	try
 	{
-		texture = new Texture(L".\\wood.dds");
+		texture = new Texture(L"camera.png");
 	}
 	catch (...) {}
 
 	Vector3 positionList[] = {
-		Vector3(-0.5f, 0.5f, 0.f),
-		Vector3(0.5f, 0.5f, 0.f),
-		Vector3(-0.5f, -0.5f, -0.f),
-		Vector3(0.5f, -0.5f, 0.f)
+		Vector3(0.0f, 0.0f, 0.f),
+		Vector3(0.0f, 1.0f, 0.f),
+		Vector3(1.0f, 0.0f, -0.f),
+		Vector3(1.0f, 1.0f, 0.f)
 	};
 
 	Vector2 texcoordList[] = {
@@ -38,10 +38,10 @@ AGizmo::AGizmo(std::string name, void* shader_byte_code, size_t shader_size) : A
 	};
 
 	TextureVertex vertexList[] = {
-		{positionList[0], texcoordList[0]},
-		{positionList[1], texcoordList[1]},
-		{positionList[2], texcoordList[2]},
-		{positionList[3], texcoordList[3]},
+		{positionList[0], texcoordList[3]},
+		{positionList[1], texcoordList[2]},
+		{positionList[2], texcoordList[1]},
+		{positionList[3], texcoordList[0]},
 	};
 
 	mVertexBuffer = AGraphicsEngine::getInstance()->createVertexBuffer();
