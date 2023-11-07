@@ -1,4 +1,6 @@
 #include"AppWindow.h"
+
+#include <DirectXTex.h>
 #include<Windows.h>
 #include"imgui.h"
 #include"imgui_impl_dx11.h"
@@ -7,11 +9,21 @@
 #include"GlobalProperties.h"
 #include<iostream>
 
+#include <iostream>
+
+using namespace std;
+
+#if __cplusplus <= 201402L 
+#define _SILENCE_EXPERIMENTAL_FILESYSTEM_DEPRECATION_WARNING
+#include <experimental/filesystem>
+#endif
+
 AppWindow::AppWindow() {}
 
 AppWindow::~AppWindow() {}
 
 void AppWindow::onCreate() {
+
 	AWindow::onCreate();
 	GameObjectManager::initialize();
 	AGraphicsEngine::getInstance()->initialize();
@@ -46,6 +58,23 @@ void AppWindow::onCreate() {
 	AGraphicsEngine::getInstance()->releaseCompiledPixelShader();
 
 	UIManager::initialize(this->mWindowHandle);
+
+
+	//Create vertex shaders with Texture
+	void* textureShaderCode = nullptr;
+	size_t textureShadderSize;
+	AGraphicsEngine::getInstance()->compileVertexShader(L"TextureVertexShader.hlsl", "vsmain", &textureShaderCode, &textureShadderSize);
+	textureVertexShader = AGraphicsEngine::getInstance()->createVertexShader(textureShaderCode, textureShadderSize);
+
+	//Create Gizmo
+	gizmo = new AGizmo("Gizmo", textureShaderCode, textureShadderSize);
+
+
+	//Create pixel shader with texture
+	AGraphicsEngine::getInstance()->releaseCompiledVertexShader();
+	AGraphicsEngine::getInstance()->compilePixelShader(L"TexturePixelShader.hlsl", "psmain", &textureShaderCode, &textureShadderSize);
+	texturePixelShader = AGraphicsEngine::getInstance()->createPixelShader(textureShaderCode, textureShadderSize);
+	AGraphicsEngine::getInstance()->releaseCompiledPixelShader();
 }
 
 void AppWindow::onUpdate() {
@@ -69,6 +98,10 @@ void AppWindow::onUpdate() {
 
 	GameObjectManager::getInstance()->update();
 	GameObjectManager::getInstance()->render(width, height, mVertexShader, mPixelShader);
+
+	//gizmo test
+	gizmo->draw(width, height, textureVertexShader, texturePixelShader, SceneCameraManager::getInstance()->getSceneCameraViewMatrix(),SceneCameraManager::getInstance()->getSceneCameraProjectionMatrix());
+
 	UIManager::getInstance()->draw();
 	mSwapChain->present(false);
 }

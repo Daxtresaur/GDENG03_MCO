@@ -7,6 +7,7 @@ class AIndexBuffer;
 class AConstantBuffer;
 class AVertexShader;
 class APixelShader;
+class Texture;
 
 class ADeviceContext
 {
@@ -22,6 +23,8 @@ public:
 	void setPixelShader(APixelShader* pixel_shader);
 	void setConstantBuffer(AConstantBuffer* constant_buffer, AVertexShader* vertex_shader);
 	void setConstantBuffer(AConstantBuffer* constant_buffer, APixelShader* pixel_shader);
+	void setTexture(Texture* texture, AVertexShader* vertex_shader);
+	void setTexture(Texture* texture, APixelShader* pixel_shader);
 
 	ID3D11DeviceContext* getD3DDeviceContext();
 

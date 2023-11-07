@@ -22,6 +22,8 @@
 #include"Randomizer.h"
 #include<vector>
 
+#include "AGizmo.h"
+
 class AppWindow : public AWindow
 {
 public:
@@ -39,4 +41,9 @@ private:
 	AConstantBuffer* mConstantBuffer;
 	AVertexShader* mVertexShader;
 	APixelShader* mPixelShader;
+
+	AVertexShader* textureVertexShader;
+	APixelShader* texturePixelShader;
+
+	AGizmo* gizmo;
 };

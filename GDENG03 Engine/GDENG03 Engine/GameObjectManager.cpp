@@ -38,14 +38,6 @@ int GameObjectManager::getObjectCount() {
 	return mGameObjectList.size();
 }
 
-int GameObjectManager::getActiveObjectCount() {
-	int activeObjectCount = 0;
-	for (int i = 0; i < mGameObjectList.size(); i++) {
-		if (mGameObjectList[i]->isActive()) activeObjectCount++;
-	}
-	return activeObjectCount;
-}
-
 void GameObjectManager::update() {
 	for (int i = 0; i < mGameObjectList.size(); i++) {
 		if (mGameObjectList[i]->isActive()) mGameObjectList[i]->update(TimeManager::getDeltaTime());

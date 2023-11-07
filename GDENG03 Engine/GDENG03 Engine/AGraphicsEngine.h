@@ -61,4 +61,5 @@ protected:
 	friend class AConstantBuffer;
 	friend class AVertexShader;
 	friend class APixelShader;
+	friend class TextureVertexBuffer;
 };

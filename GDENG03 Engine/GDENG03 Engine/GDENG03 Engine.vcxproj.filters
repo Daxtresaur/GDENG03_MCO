@@ -58,6 +58,15 @@
     <Filter Include="Engine\Game Objects">
       <UniqueIdentifier>{42a52f78-2cf3-48d9-83a8-158889ba6236}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\Graphics\Texture">
+      <UniqueIdentifier>{ef2c778b-c5c6-48a6-a6de-88c689620062}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Graphics\Gizmo">
+      <UniqueIdentifier>{f4219681-c8b8-493d-a7c2-31612a1fb6e9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Graphics\VertexBuffer\TexturedVertexBuffer">
+      <UniqueIdentifier>{ad04e6f8-3829-4bea-841c-a8c8930ae1ee}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -191,6 +200,23 @@
     </ClCompile>
     <ClCompile Include="GameCamera.cpp">
       <Filter>Engine\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="GameViewWindow.cpp" />
+    <ClCompile Include="GWindow.cpp" />
+    <ClCompile Include="AGizmo.cpp">
+      <Filter>Engine\Graphics\Gizmo</Filter>
+    </ClCompile>
+    <ClCompile Include="Texture.cpp">
+      <Filter>Engine\Graphics\Texture</Filter>
+    </ClCompile>
+    <ClCompile Include="CameraGizmo.cpp">
+      <Filter>Engine\Graphics\Gizmo</Filter>
+    </ClCompile>
+    <ClCompile Include="TextureVertexBuffer.cpp">
+      <Filter>Engine\Graphics\VertexBuffer\TexturedVertexBuffer</Filter>
+    </ClCompile>
+    <ClCompile Include="Vector2.cpp">
+      <Filter>Engine\Math</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -329,13 +355,22 @@
     <ClInclude Include="GameCamera.h">
       <Filter>Engine\Camera</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <FxCompile Include="VertexShader.hlsl">
-      <Filter>App</Filter>
-    </FxCompile>
-    <FxCompile Include="PixelShader.hlsl">
-      <Filter>App</Filter>
-    </FxCompile>
+    <ClInclude Include="GameViewWindow.h" />
+    <ClInclude Include="GWindow.h" />
+    <ClInclude Include="AGizmo.h">
+      <Filter>Engine\Graphics\Gizmo</Filter>
+    </ClInclude>
+    <ClInclude Include="Texture.h">
+      <Filter>Engine\Graphics\Texture</Filter>
+    </ClInclude>
+    <ClInclude Include="CameraGizmo.h">
+      <Filter>Engine\Graphics\Gizmo</Filter>
+    </ClInclude>
+    <ClInclude Include="TextureVertexBuffer.h">
+      <Filter>Engine\Graphics\VertexBuffer\TexturedVertexBuffer</Filter>
+    </ClInclude>
+    <ClInclude Include="Vector2.h">
+      <Filter>Engine\Math</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
