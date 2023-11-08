@@ -21,6 +21,7 @@
 #include"Matrix4x4.h"
 #include"Randomizer.h"
 #include<vector>
+#include"GameViewWindow.h"
 
 class AppWindow : public AWindow
 {
@@ -33,6 +34,8 @@ public:
 	virtual void onDestroy() override;
 
 private:
+	GameViewWindow mGameView;
+
 	ASwapChain* mSwapChain;
 	AVertexBuffer* mVertexBuffer;
 	AIndexBuffer* mIndexBuffer;

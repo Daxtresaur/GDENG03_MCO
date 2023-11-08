@@ -1,5 +1,6 @@
 #include"GameViewWindow.h"
 #include"GlobalProperties.h"
+#include<iostream>
 
 GameViewWindow::GameViewWindow() {
 }
@@ -30,7 +31,7 @@ void GameViewWindow::onCreate() {
 
 void GameViewWindow::onUpdate() {
 	GWindow::onUpdate();
-	GameCamera* gameCam = GameObjectManager::getInstance()->getSelectedCamera();
+	GameCamera* gameCam = GameObjectManager::getInstance()->getCurrentCamera();
 
 	if (gameCam) {
 		AGraphicsEngine::getInstance()->getImmediateDeviceContext()->clearRenderTargetColor(
@@ -63,7 +64,7 @@ void GameViewWindow::onUpdate() {
 
 void GameViewWindow::onDestroy() {
 	GWindow::onDestroy();
-	mSwapChain->release();
+	if (mSwapChain->release()) std::cout << "Released swap chain." << std::endl;
 	mVertexShader->release();
 	mPixelShader->release();
 }

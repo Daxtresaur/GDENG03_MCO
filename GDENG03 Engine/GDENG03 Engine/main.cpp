@@ -9,12 +9,10 @@ MCO: Game Engine Feature Replication
 
 int main() {
 	AppWindow scene;
-	GameViewWindow game;
 
-	if (scene.initialize() && game.initialize()) {
-		while (scene.isRunning() && game.isRunning()) {
+	if (scene.initialize()) {
+		while (scene.isRunning()) {
 			scene.broadcast();
-			game.broadcast();
 		}
 	}
 

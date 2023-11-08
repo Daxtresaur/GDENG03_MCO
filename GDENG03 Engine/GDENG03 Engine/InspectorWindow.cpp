@@ -30,8 +30,8 @@ void InspectorWindow::draw() {
 		ImGui::DragFloat3("Rotation", mObjectRotation, 1.f, -360.f, 360.f);
 		ImGui::DragFloat3("Scale", mObjectScale, 0.25f, 0.f, 100.f);
 
-		if (GameObjectManager::getInstance()->getSelectedCamera()) {
-			GameCamera* selectedCamera = GameObjectManager::getInstance()->getSelectedCamera();
+		GameCamera* selectedCamera = GameObjectManager::getInstance()->getSelectedCamera();
+		if (selectedCamera) {
 			bool isPerspective = selectedCamera->isPerspective();
 			float fov = selectedCamera->getFieldOfView();
 			int dimensions[2] = { selectedCamera->getViewportWidth(), selectedCamera->getViewportHeight() };

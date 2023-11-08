@@ -46,6 +46,8 @@ void AppWindow::onCreate() {
 	AGraphicsEngine::getInstance()->releaseCompiledPixelShader();
 
 	UIManager::initialize(this->mWindowHandle);
+
+	mGameView.initialize();
 }
 
 void AppWindow::onUpdate() {
@@ -71,6 +73,8 @@ void AppWindow::onUpdate() {
 	GameObjectManager::getInstance()->render(width, height, mVertexShader, mPixelShader);
 	UIManager::getInstance()->draw();
 	mSwapChain->present(false);
+
+	mGameView.broadcast();
 }
 
 void AppWindow::onDestroy() {
@@ -85,5 +89,8 @@ void AppWindow::onDestroy() {
 
 	GameObjectManager::destroy();
 	UIManager::destroy();
+
+	mGameView.release();
+
 	AGraphicsEngine::getInstance()->release();
 }
