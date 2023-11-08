@@ -3,7 +3,8 @@
 #include "ADeviceContext.h"
 #include "AGraphicsEngine.h"
 #include "Vector2.h"
-#include "iostream"
+#include <iostream>
+#include <cmath>
 
 using namespace std;
 
@@ -24,10 +25,10 @@ AGizmo::AGizmo(std::string name, void* shader_byte_code, size_t shader_size) : A
 	catch (...) {}
 
 	Vector3 positionList[] = {
-		Vector3(0.0f, 0.0f, 0.f),
-		Vector3(0.0f, 1.0f, 0.f),
-		Vector3(1.0f, 0.0f, -0.f),
-		Vector3(1.0f, 1.0f, 0.f)
+		Vector3(-0.5f, -0.5f, 0.f),
+		Vector3(-0.5f, 0.5f, 0.f),
+		Vector3(0.5f, -0.5f, -0.f),
+		Vector3(0.5f, 0.5f, 0.f)
 	};
 
 	Vector2 texcoordList[] = {
@@ -53,8 +54,6 @@ AGizmo::AGizmo(std::string name, void* shader_byte_code, size_t shader_size) : A
 	mConstantBuffer = AGraphicsEngine::getInstance()->createConstantBuffer();
 	mConstantBuffer->load(&datablock, sizeof(constant));
 
-
-	
 }
 
 AGizmo::~AGizmo()
@@ -65,7 +64,7 @@ AGizmo::~AGizmo()
 
 void AGizmo::update(float delta_time)
 {
-
+	
 }
 
 void AGizmo::draw(int width, int height, AVertexShader* vertex_shader, APixelShader* pixel_shader,
@@ -92,4 +91,35 @@ void AGizmo::draw(int width, int height, AVertexShader* vertex_shader, APixelSha
 
 	AGraphicsEngine::getInstance()->getImmediateDeviceContext()->drawTriangleStrip(mVertexBuffer->getVertexCount(), 0);
 }
+
+void AGizmo::lookAtCamera(Vector3 cameraPosition)
+{
+	
+	// Calculate the forward direction (from the gizmo to the camera)
+	Vector3 forward = cameraPosition - mLocalPosition;
+	forward.Normalize();
+
+	// Assuming left-handed coordinate system, "up" is (0, 1, 0)
+	Vector3 up(0, 1, 0);
+
+	// Calculate the right vector by taking the cross product of "up" and "forward"
+	Vector3 right = Vector3::cross(up, forward);
+	right.Normalize();
+
+	// Calculate the new "up" vector by taking the cross product of "forward" and "right"
+	up = Vector3::cross(forward, right);
+	up.Normalize();
+
+	// Create a rotation matrix based on the calculated right, up, and forward vectors
+	Matrix4x4 rotationMatrix;
+	rotationMatrix.setRightVector(right);
+	rotationMatrix.setUpVector(up);
+	rotationMatrix.setForwardVector(forward);
+
+	// Set the gizmo's world matrix to the new rotation matrix
+	updateRotationMatrix(rotationMatrix);
+	
+}
+
+
 

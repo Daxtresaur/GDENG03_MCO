@@ -7,6 +7,8 @@
 #include"GlobalProperties.h"
 
 GameCamera::GameCamera(std::string name, void* shader_byte_code, size_t shader_size) : ACamera::ACamera(name) {
+
+
 	Vertex* currentVertexList = new Vertex[8];
 
 	currentVertexList[0] = Vertex(

@@ -1,5 +1,8 @@
 #include"ASwapChain.h"
+
+#include "ADeviceContext.h"
 #include"AGraphicsEngine.h"
+
 
 ASwapChain::ASwapChain() {}
 
@@ -7,6 +10,8 @@ ASwapChain::~ASwapChain() {}
 
 bool ASwapChain::initialize(HWND window_handle, UINT window_width, UINT window_height) {
 	ID3D11Device* device = AGraphicsEngine::getInstance()->mDevice;
+	ADeviceContext* context = AGraphicsEngine::getInstance()->getImmediateDeviceContext();
+
 
 	DXGI_SWAP_CHAIN_DESC desc;
 	ZeroMemory(&desc, sizeof(desc));
@@ -53,6 +58,21 @@ bool ASwapChain::initialize(HWND window_handle, UINT window_width, UINT window_h
 	result = device->CreateDepthStencilView(buffer, NULL, &this->mDepthStencilView);
 	buffer->Release();
 	if (FAILED(result)) return false;
+
+	D3D11_BLEND_DESC blendDesc = {};
+	blendDesc.RenderTarget[0].BlendEnable = TRUE;
+	blendDesc.RenderTarget[0].SrcBlend = D3D11_BLEND_SRC_ALPHA;
+	blendDesc.RenderTarget[0].DestBlend = D3D11_BLEND_INV_SRC_ALPHA;
+	blendDesc.RenderTarget[0].BlendOp = D3D11_BLEND_OP_ADD;
+	blendDesc.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_ONE;
+	blendDesc.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ZERO;
+	blendDesc.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;
+	blendDesc.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
+
+	// Create the blend state
+	ID3D11BlendState* blendState = nullptr;
+	device->CreateBlendState(&blendDesc, &blendState);
+	context->getD3DDeviceContext()->OMSetBlendState(blendState, nullptr, 0xFFFFFFFF);
 
 	return true;
 }

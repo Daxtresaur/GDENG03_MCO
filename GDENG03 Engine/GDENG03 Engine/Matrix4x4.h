@@ -17,6 +17,7 @@ public:
 	void setRotationX(float theta);
 	void setRotationY(float theta);
 	void setRotationZ(float theta);
+	
 	void setOrthographicProjection(float width, float height, float near_plane, float far_plane);
 	void setPerspectiveProjection(float field_of_view, float aspect, float near_plane, float far_plane);
 
@@ -35,6 +36,12 @@ public:
 	Vector3 getTranslation();
 	float getDeterminant();
 	void inverse();
+
+	void setRotationMatrix(Matrix4x4 rotationMatrix);
+	void setRightVector(Vector3 right);
+	void setUpVector(Vector3 up);
+	void setForwardVector(Vector3 forward);
+
 
 	float mMatrix[4][4] = {};
 };

@@ -34,7 +34,7 @@ void AppWindow::onCreate() {
 	UINT height = windowRect.bottom - windowRect.top;
 	mSwapChain->initialize(this->mWindowHandle, width, height);
 
-	SceneCamera* sceneCamera = new SceneCamera("UnregisteredHyperCam2");
+	sceneCamera = new SceneCamera("UnregisteredHyperCam2");
 	sceneCamera->setPosition(0.f, 0.f, 0.f);
 	sceneCamera->setRotation(0.f, 0.f, 0.f);
 	sceneCamera->setPerspectiveProjectionMatrix(1.57f, (float)width, (float)height, 0.1f, 100.f);
@@ -100,6 +100,7 @@ void AppWindow::onUpdate() {
 	GameObjectManager::getInstance()->render(width, height, mVertexShader, mPixelShader);
 
 	//gizmo test
+	gizmo->lookAtCamera(sceneCamera->getLocalPosition());
 	gizmo->draw(width, height, textureVertexShader, texturePixelShader, SceneCameraManager::getInstance()->getSceneCameraViewMatrix(),SceneCameraManager::getInstance()->getSceneCameraProjectionMatrix());
 
 	UIManager::getInstance()->draw();

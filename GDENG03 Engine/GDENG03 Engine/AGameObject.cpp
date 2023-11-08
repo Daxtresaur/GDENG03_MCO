@@ -97,6 +97,18 @@ void AGameObject::updateLocalMatrix() {
 	mLocalMatrix = newLocalMatrix;
 }
 
+void AGameObject::updateRotationMatrix(const Matrix4x4& rotationMatrix)
+{
+	Matrix4x4 newLocalMatrix;
+	newLocalMatrix.setIdentity();
+
+	newLocalMatrix.scale(mLocalScale);
+	newLocalMatrix *= rotationMatrix;
+	newLocalMatrix.translate(mLocalPosition);
+
+	mLocalMatrix = newLocalMatrix;
+}
+
 Matrix4x4 AGameObject::getLocalMatrix() {
 	return mLocalMatrix;
 }

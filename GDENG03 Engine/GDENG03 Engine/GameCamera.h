@@ -3,6 +3,7 @@
 #include"AVertexBuffer.h"
 #include"AIndexBuffer.h"
 #include"AConstantBuffer.h"
+#include "AGizmo.h"
 
 class GameCamera : public ACamera
 {
@@ -25,6 +26,8 @@ private:
 	AVertexBuffer* mVertexBuffer;
 	AIndexBuffer* mIndexBuffer;
 	AConstantBuffer* mConstantBuffer;
+
+	AGizmo* gizmo;
 
 	float mTranslationSpeed = 1.f;
 	float mRotationSpeed = 1.f;

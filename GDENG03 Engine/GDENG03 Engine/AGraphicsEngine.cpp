@@ -51,6 +51,7 @@ bool AGraphicsEngine::initialize() {
 	mdxgiDevice->GetParent(__uuidof(IDXGIAdapter), (void**)&mdxgiAdapter);
 	mdxgiAdapter->GetParent(__uuidof(IDXGIFactory), (void**)&mdxgiFactory);
 
+
 	return true;
 }
 

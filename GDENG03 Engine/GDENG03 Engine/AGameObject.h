@@ -34,6 +34,7 @@ public:
 	Vector3 getLocalRotation();
 
 	void updateLocalMatrix();
+	void updateRotationMatrix(const Matrix4x4& rotationMatrix);
 	Matrix4x4 getLocalMatrix();
 
 	__declspec(align(16))

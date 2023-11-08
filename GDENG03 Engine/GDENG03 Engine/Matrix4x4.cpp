@@ -67,6 +67,31 @@ void Matrix4x4::setRotationZ(float theta) {
 	mMatrix[1][1] = cos(theta);
 }
 
+void Matrix4x4::setRotationMatrix(Matrix4x4 rotationMatrix)
+{
+
+}
+void Matrix4x4::setRightVector(Vector3 right) {
+	// Assuming that your matrix layout follows the convention of right, up, forward, and translation columns
+	mMatrix[0][0] = -right.x;
+	mMatrix[1][0] = -right.y;
+	mMatrix[2][0] = -right.z;
+}
+
+void Matrix4x4::setUpVector(Vector3 up) {
+	// Assuming that your matrix layout follows the convention of right, up, forward, and translation columns
+	mMatrix[0][1] = up.x;
+	mMatrix[1][1] = up.y;
+	mMatrix[2][1] = up.z;
+}
+
+void Matrix4x4::setForwardVector(Vector3 forward) {
+	// Assuming that your matrix layout follows the convention of right, up, forward, and translation columns
+	mMatrix[0][2] = forward.x;
+	mMatrix[1][2] = forward.y;
+	mMatrix[2][2] = forward.z;
+}
+
 void Matrix4x4::setOrthographicProjection(float width, float height, float near_plane, float far_plane) {
 	setIdentity();
 

@@ -46,4 +46,5 @@ private:
 	APixelShader* texturePixelShader;
 
 	AGizmo* gizmo;
+	SceneCamera* sceneCamera;
 };

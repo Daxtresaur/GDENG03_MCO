@@ -1,5 +1,7 @@
 #include "Vector3.h"
 
+#include <cmath>
+
 Vector3::Vector3() {
 	x = 0.f;
 	y = 0.f;
@@ -44,6 +46,24 @@ Vector3 Vector3::operator+(Vector3 vector) {
 	return Vector3(x + vector.x, y + vector.y, z + vector.z);
 }
 
+Vector3 Vector3::operator-(Vector3 vector)
+{
+	return Vector3(x - vector.x, y - vector.y, z - vector.z);
+}
+
 Vector3 Vector3::operator*(float scalar) {
 	return Vector3(scalar * x, scalar * y, scalar * z);
 }
+
+void Vector3::Normalize()
+{
+	float length = sqrt(x * x + y * y + z * z);
+
+	if (length != 0)
+	{
+		x /= length;
+		y /= length;
+		z /= length;
+	}
+}
+
