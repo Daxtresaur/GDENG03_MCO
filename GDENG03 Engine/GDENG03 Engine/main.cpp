@@ -12,10 +12,12 @@ int main() {
 	GameViewWindow game;
 
 	if (scene.initialize() && game.initialize()) {
-		while (scene.isRunning() && game.isRunning()) {
+		while (scene.isRunning()) {
 			scene.broadcast();
 			game.broadcast();
 		}
+		game.onDestroy();
+		game.release();
 	}
 
 	return 0;

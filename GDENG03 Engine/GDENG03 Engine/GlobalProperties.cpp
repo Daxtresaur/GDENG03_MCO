@@ -2,6 +2,9 @@
 
 int GlobalProperties::WINDOW_WIDTH = 1440;
 int GlobalProperties::WINDOW_HEIGHT = 900;
+int GlobalProperties::GAME_VIEW_WIDTH = 853;
+int GlobalProperties::GAME_VIEW_HEIGHT = 480;
+
 bool GlobalProperties::IS_CUBE_MOVEMENT_ON = true;
 bool GlobalProperties::ARE_CUBES_ACTIVE = true;
 float GlobalProperties::BACKGROUND_COLOR[3] = {

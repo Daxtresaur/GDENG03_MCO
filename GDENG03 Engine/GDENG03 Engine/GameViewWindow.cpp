@@ -30,7 +30,7 @@ void GameViewWindow::onCreate() {
 
 void GameViewWindow::onUpdate() {
 	GWindow::onUpdate();
-	GameCamera* gameCam = GameObjectManager::getInstance()->getSelectedCamera();
+	GameCamera* gameCam = GameObjectManager::getInstance()->getCurrentCamera();
 
 	if (gameCam) {
 		AGraphicsEngine::getInstance()->getImmediateDeviceContext()->clearRenderTargetColor(

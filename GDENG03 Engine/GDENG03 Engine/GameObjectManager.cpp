@@ -227,17 +227,41 @@ AGameObject* GameObjectManager::getSelectedObject() {
 }
 
 void GameObjectManager::deselectObject() {
+	if (mCurrentGameCamera == mCurrentSelectedObject) mCurrentGameCamera = nullptr;
+
 	if (mCurrentSelectedObject) {
 		mCurrentSelectedObject->deselect();
 		mCurrentSelectedObject = nullptr;
 	}
 }
 
-GameCamera* GameObjectManager::getSelectedCamera() {
-	if (!mCurrentSelectedObject) return nullptr;
+bool GameObjectManager::isCameraSelected() {
+	if (!mCurrentSelectedObject) return false;
 
-	GameCamera* camera = mCameraTable[mCurrentSelectedObject->getObjectName()];
-	return camera;
+	std::string currentObjectName = mCurrentSelectedObject->getObjectName();
+	GameCamera* camera = mCameraTable[currentObjectName];
+	if (!camera) return false;
+
+	return true;
+}
+
+GameCamera* GameObjectManager::getSelectedCamera() {
+	if (isCameraSelected()) {
+		std::string currentObjectName = mCurrentSelectedObject->getObjectName();
+		GameCamera* camera = mCameraTable[currentObjectName];
+		if (camera != mCurrentGameCamera) setCurrentCamera(camera);
+		return camera;
+	}
+
+	else return nullptr;
+}
+
+void GameObjectManager::setCurrentCamera(GameCamera* game_camera) {
+	mCurrentGameCamera = game_camera;
+}
+
+GameCamera* GameObjectManager::getCurrentCamera() {
+	return mCurrentGameCamera;
 }
 
 GameObjectManager::GameObjectManager() {

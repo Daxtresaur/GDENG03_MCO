@@ -39,7 +39,11 @@ public:
 	AGameObject* getSelectedObject();
 	void deselectObject();
 
+	bool isCameraSelected();
 	GameCamera* getSelectedCamera();
+
+	void setCurrentCamera(GameCamera* game_camera);
+	GameCamera* getCurrentCamera();
 
 private:
 	GameObjectManager();
@@ -53,4 +57,5 @@ private:
 	std::unordered_map<std::string, GameCamera*> mCameraTable;
 
 	AGameObject* mCurrentSelectedObject = nullptr;
+	GameCamera* mCurrentGameCamera = nullptr;
 };
