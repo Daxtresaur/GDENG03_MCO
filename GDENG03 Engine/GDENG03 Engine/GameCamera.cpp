@@ -66,6 +66,8 @@ GameCamera::GameCamera(std::string name) : ACamera::ACamera(name) {
 
 	mViewportWidth = GlobalProperties::GAME_VIEW_WIDTH;
 	mViewportHeight = GlobalProperties::GAME_VIEW_HEIGHT;
+
+	mIconMatrix.setIdentity();
 }
 
 GameCamera::~GameCamera() {
@@ -228,11 +230,14 @@ void GameCamera::update(float delta_time) {
 }
 
 void GameCamera::draw(int width, int height, Matrix4x4 view_matrix, Matrix4x4 projection_matrix) {
-	faceSceneCamera(SceneCameraManager::getInstance()->getSceneCamera()->getLocalPosition());
-
 	constant shaderNumbers;
 
-	shaderNumbers.worldMatrix = this->getLocalMatrix();
+	mIconMatrix.setIdentity();
+	mIconMatrix.scale(mLocalScale);
+	faceSceneCamera(SceneCameraManager::getInstance()->getSceneCamera()->getLocalPosition());
+	mIconMatrix.translate(mLocalPosition);
+
+	shaderNumbers.worldMatrix = mIconMatrix;
 	shaderNumbers.viewMatrix = view_matrix;
 	shaderNumbers.projectionMatrix = projection_matrix;
 	shaderNumbers.coefficient = 0.5f * (sin(mElapsedTime) + 1.f);
@@ -265,27 +270,27 @@ void GameCamera::onRMBPress(const Point mouse_position) {}
 void GameCamera::onRMBRelease(const Point mouse_position) {}
 
 void GameCamera::faceSceneCamera(Vector3 scene_camera_position) {
-	// Calculate the forward direction (from the gizmo to the camera)
+	// Calculate the forward direction (from the gizmo to the camera).
 	Vector3 forward = scene_camera_position - mLocalPosition;
 	forward.Normalize();
 
-	// Assuming left-handed coordinate system, "up" is (0, 1, 0)
+	// Assuming left-handed coordinate system, "up" is (0, 1, 0).
 	Vector3 up(0, 1, 0);
 
-	// Calculate the right vector by taking the cross product of "up" and "forward"
+	// Calculate the right vector by taking the cross product of "up" and "forward".
 	Vector3 right = Vector3::cross(up, forward);
 	right.Normalize();
 
-	// Calculate the new "up" vector by taking the cross product of "forward" and "right"
+	// Calculate the new "up" vector by taking the cross product of "forward" and "right".
 	up = Vector3::cross(forward, right);
 	up.Normalize();
 
-	// Create a rotation matrix based on the calculated right, up, and forward vectors
+	// Create a rotation matrix based on the calculated right, up, and forward vectors.
 	Matrix4x4 rotationMatrix;
 	rotationMatrix.setRightVector(right);
 	rotationMatrix.setUpVector(up);
 	rotationMatrix.setForwardVector(forward);
 
-	// Set the gizmo's world matrix to the new rotation matrix
-	updateRotationMatrix(rotationMatrix);
+	// Apply this rotation to the icon's matrix.
+	mIconMatrix *= rotationMatrix;
 }

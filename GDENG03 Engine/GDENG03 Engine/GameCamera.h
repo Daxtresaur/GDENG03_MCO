@@ -34,6 +34,7 @@ private:
 
 	AVertexShader* mVertexShader;
 	APixelShader* mPixelShader;
+	Matrix4x4 mIconMatrix;
 
 	float mTranslationSpeed = 1.f;
 	float mRotationSpeed = 1.f;
