@@ -37,11 +37,10 @@ public:
 	float getDeterminant();
 	void inverse();
 
-	void setRotationMatrix(Matrix4x4 rotationMatrix);
 	void setRightVector(Vector3 right);
 	void setUpVector(Vector3 up);
 	void setForwardVector(Vector3 forward);
-
+	bool isEqualTo(const Matrix4x4& other_matrix);
 
 	float mMatrix[4][4] = {};
 };

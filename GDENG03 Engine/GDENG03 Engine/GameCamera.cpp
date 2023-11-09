@@ -230,6 +230,8 @@ void GameCamera::update(float delta_time) {
 }
 
 void GameCamera::draw(int width, int height, Matrix4x4 view_matrix, Matrix4x4 projection_matrix) {
+	if (!(view_matrix.isEqualTo(SceneCameraManager::getInstance()->getSceneCameraViewMatrix()))) return;
+
 	constant shaderNumbers;
 
 	mIconMatrix.setIdentity();
