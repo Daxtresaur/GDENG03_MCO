@@ -63,6 +63,9 @@ GameCamera::GameCamera(std::string name) : ACamera::ACamera(name) {
 	AGraphicsEngine::getInstance()->releaseCompiledPixelShader();
 
 	InputManager::getInstance()->addListener(this);
+
+	mViewportWidth = GlobalProperties::GAME_VIEW_WIDTH;
+	mViewportHeight = GlobalProperties::GAME_VIEW_HEIGHT;
 }
 
 GameCamera::~GameCamera() {

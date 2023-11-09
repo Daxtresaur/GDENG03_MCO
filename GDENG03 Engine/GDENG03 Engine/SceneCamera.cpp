@@ -2,8 +2,12 @@
 #include"InputManager.h"
 #include<Windows.h>
 #include<iostream>
+#include"GlobalProperties.h"
 
-SceneCamera::SceneCamera(std::string name) : ACamera::ACamera(name) {}
+SceneCamera::SceneCamera(std::string name) : ACamera::ACamera(name) {
+	mViewportWidth = GlobalProperties::WINDOW_WIDTH;
+	mViewportHeight = GlobalProperties::WINDOW_HEIGHT;
+}
 
 SceneCamera::~SceneCamera() {}
 
