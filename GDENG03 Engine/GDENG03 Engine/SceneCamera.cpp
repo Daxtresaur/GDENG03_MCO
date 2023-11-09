@@ -55,7 +55,7 @@ void SceneCamera::update(float delta_time) {
 	}
 }
 
-void SceneCamera::draw(int width, int height, Matrix4x4 view_matrix, Matrix4x4 projection_matrix) {}
+void SceneCamera::draw(int width, int height, ACamera* camera) {}
 
 void SceneCamera::onPress(int key) {
 	switch (key) {

@@ -49,8 +49,7 @@ void GameObjectManager::render(int viewport_width, int viewport_height) {
 		if (mGameObjectList[i]->isActive()) mGameObjectList[i]->draw(
 			viewport_width,
 			viewport_height,
-			SceneCameraManager::getInstance()->getSceneCameraViewMatrix(),
-			SceneCameraManager::getInstance()->getSceneCameraProjectionMatrix()
+			SceneCameraManager::getInstance()->getSceneCamera()
 		);
 	}
 }
@@ -60,8 +59,7 @@ void GameObjectManager::renderToGameCamera(int viewport_width, int viewport_heig
 		if (mGameObjectList[i]->isActive()) mGameObjectList[i]->draw(
 			viewport_width,
 			viewport_height,
-			game_camera->getViewMatrix(),
-			game_camera->getProjectionMatrix()
+			game_camera
 		);
 	}
 }

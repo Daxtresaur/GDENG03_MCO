@@ -15,7 +15,7 @@ public:
 	~GameCamera();
 
 	void update(float delta_time) override;
-	void draw(int width, int height, Matrix4x4 view_matrix, Matrix4x4 projection_matrix) override;
+	void draw(int width, int height, ACamera* camera) override;
 
 	void onPress(int key) override;
 	void onRelease(int key) override;

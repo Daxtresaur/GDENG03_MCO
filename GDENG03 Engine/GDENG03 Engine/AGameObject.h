@@ -5,6 +5,8 @@
 #include"AVertexShader.h"
 #include"APixelShader.h"
 
+class ACamera;
+
 class AGameObject
 {
 public:
@@ -12,7 +14,7 @@ public:
 	~AGameObject();
 
 	virtual void update(float delta_time) = 0;
-	virtual void draw(int width, int height, Matrix4x4 view_matrix, Matrix4x4 projection_matrix) = 0;
+	virtual void draw(int width, int height, ACamera* camera) = 0;
 
 	std::string getObjectName();
 	bool isActive();

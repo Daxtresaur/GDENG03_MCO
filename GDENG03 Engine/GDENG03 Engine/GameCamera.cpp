@@ -229,8 +229,8 @@ void GameCamera::update(float delta_time) {
 	}
 }
 
-void GameCamera::draw(int width, int height, Matrix4x4 view_matrix, Matrix4x4 projection_matrix) {
-	if (!(view_matrix.isEqualTo(SceneCameraManager::getInstance()->getSceneCameraViewMatrix()))) return;
+void GameCamera::draw(int width, int height, ACamera* camera) {
+	if (camera != SceneCameraManager::getInstance()->getSceneCamera()) return;
 
 	constant shaderNumbers;
 
@@ -240,8 +240,8 @@ void GameCamera::draw(int width, int height, Matrix4x4 view_matrix, Matrix4x4 pr
 	mIconMatrix.translate(mLocalPosition);
 
 	shaderNumbers.worldMatrix = mIconMatrix;
-	shaderNumbers.viewMatrix = view_matrix;
-	shaderNumbers.projectionMatrix = projection_matrix;
+	shaderNumbers.viewMatrix = camera->getViewMatrix();
+	shaderNumbers.projectionMatrix = camera->getProjectionMatrix();
 	shaderNumbers.coefficient = 0.5f * (sin(mElapsedTime) + 1.f);
 
 	mConstantBuffer->update(AGraphicsEngine::getInstance()->getImmediateDeviceContext(), &shaderNumbers);

@@ -5,6 +5,7 @@
 #include"ADeviceContext.h"
 #include<iostream>
 #include"GlobalProperties.h"
+#include"ACamera.h"
 
 ACube::ACube(std::string name) : AGameObject::AGameObject(name) {
 	void* shaderByteCode = nullptr;
@@ -252,12 +253,12 @@ void ACube::update(float delta_time) {
 	}
 }
 
-void ACube::draw(int width, int height, Matrix4x4 view_matrix, Matrix4x4 projection_matrix) {
+void ACube::draw(int width, int height, ACamera* camera) {
 	constant shaderNumbers;
 
 	shaderNumbers.worldMatrix = this->getLocalMatrix();
-	shaderNumbers.viewMatrix = view_matrix;
-	shaderNumbers.projectionMatrix = projection_matrix;
+	shaderNumbers.viewMatrix = camera->getViewMatrix();
+	shaderNumbers.projectionMatrix = camera->getProjectionMatrix();
 	shaderNumbers.coefficient = 0.5f * (sin(mElapsedTime) + 1.f);
 
 	mConstantBuffer->update(AGraphicsEngine::getInstance()->getImmediateDeviceContext(), &shaderNumbers);

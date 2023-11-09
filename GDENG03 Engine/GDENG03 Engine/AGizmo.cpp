@@ -67,7 +67,7 @@ void AGizmo::update(float delta_time)
 	
 }
 
-void AGizmo::draw(int width, int height, Matrix4x4 view_matrix, Matrix4x4 projection_matrix)
+void AGizmo::draw(int width, int height, ACamera* camera)
 {
 }
 
