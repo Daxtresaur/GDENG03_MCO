@@ -1,5 +1,6 @@
 #pragma once
 #include"AWindow.h"
+#include"GameViewWindow.h"
 #include"AGraphicsEngine.h"
 #include"GameObjectManager.h"
 #include"InputManager.h"
@@ -21,8 +22,7 @@
 #include"Matrix4x4.h"
 #include"Randomizer.h"
 #include<vector>
-
-#include "AGizmo.h"
+#include"AGizmo.h"
 
 class AppWindow : public AWindow
 {
@@ -35,16 +35,10 @@ public:
 	virtual void onDestroy() override;
 
 private:
+	GameViewWindow mGameView;
+
 	ASwapChain* mSwapChain;
 	AVertexBuffer* mVertexBuffer;
 	AIndexBuffer* mIndexBuffer;
 	AConstantBuffer* mConstantBuffer;
-	AVertexShader* mVertexShader;
-	APixelShader* mPixelShader;
-
-	AVertexShader* textureVertexShader;
-	APixelShader* texturePixelShader;
-
-	AGizmo* gizmo;
-	SceneCamera* sceneCamera;
 };

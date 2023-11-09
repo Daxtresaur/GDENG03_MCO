@@ -2,9 +2,8 @@
 #include"Vector3.h"
 #include"Matrix4x4.h"
 #include<string>
-
-class AVertexShader;
-class APixelShader;
+#include"AVertexShader.h"
+#include"APixelShader.h"
 
 class AGameObject
 {
@@ -13,7 +12,7 @@ public:
 	~AGameObject();
 
 	virtual void update(float delta_time) = 0;
-	virtual void draw(int width, int height, AVertexShader* vertex_shader, APixelShader* pixel_shader, Matrix4x4 view_matrix, Matrix4x4 projection_matrix) = 0;
+	virtual void draw(int width, int height, Matrix4x4 view_matrix, Matrix4x4 projection_matrix) = 0;
 
 	std::string getObjectName();
 	bool isActive();

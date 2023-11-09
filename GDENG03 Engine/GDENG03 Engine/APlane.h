@@ -6,11 +6,11 @@
 class APlane : public AGameObject
 {
 public:
-	APlane(std::string name, void* shader_byte_code, size_t shader_size);
+	APlane(std::string name);
 	~APlane();
 
 	void update(float delta_time) override;
-	void draw(int width, int height, AVertexShader* vertex_shader, APixelShader* pixel_shader, Matrix4x4 view_matrix, Matrix4x4 projection_matrix) override;
+	void draw(int width, int height, Matrix4x4 view_matrix, Matrix4x4 projection_matrix) override;
 	void setTranslationSpeed(float translation_speed);
 	void setRotationSpeed(float rotation_speed);
 	void setScaleSpeed(float scale_speed);
@@ -18,6 +18,9 @@ public:
 private:
 	AVertexBuffer* mVertexBuffer;
 	AConstantBuffer* mConstantBuffer;
+
+	AVertexShader* mVertexShader;
+	APixelShader* mPixelShader;
 
 	float mTranslationSpeed = 1.f;
 	float mRotationSpeed = 1.f;

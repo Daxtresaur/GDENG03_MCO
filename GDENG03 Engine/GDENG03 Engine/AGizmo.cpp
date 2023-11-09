@@ -17,7 +17,7 @@ struct TextureVertex
 
 AGizmo::AGizmo(std::string name, void* shader_byte_code, size_t shader_size) : AGameObject::AGameObject(name)
 {
-	//CreateTexture
+	//Create texture
 	try
 	{
 		texture = new Texture(L"camera.png");
@@ -67,29 +67,8 @@ void AGizmo::update(float delta_time)
 	
 }
 
-void AGizmo::draw(int width, int height, AVertexShader* vertex_shader, APixelShader* pixel_shader,
-	Matrix4x4 view_matrix, Matrix4x4 projection_matrix)
+void AGizmo::draw(int width, int height, Matrix4x4 view_matrix, Matrix4x4 projection_matrix)
 {
-	constant shaderNumbers;
-
-	shaderNumbers.worldMatrix = this->getLocalMatrix();
-	shaderNumbers.viewMatrix = view_matrix;
-	shaderNumbers.projectionMatrix = projection_matrix;
-	shaderNumbers.coefficient = 0.f;
-
-	mConstantBuffer->update(AGraphicsEngine::getInstance()->getImmediateDeviceContext(), &shaderNumbers);
-
-	AGraphicsEngine::getInstance()->getImmediateDeviceContext()->setConstantBuffer(mConstantBuffer, vertex_shader);
-	AGraphicsEngine::getInstance()->getImmediateDeviceContext()->setConstantBuffer(mConstantBuffer, pixel_shader);
-	
-
-	AGraphicsEngine::getInstance()->getImmediateDeviceContext()->setVertexShader(vertex_shader);
-	AGraphicsEngine::getInstance()->getImmediateDeviceContext()->setPixelShader(pixel_shader);
-	AGraphicsEngine::getInstance()->getImmediateDeviceContext()->setVertexBuffer(mVertexBuffer);
-
-	AGraphicsEngine::getInstance()->getImmediateDeviceContext()->setTexture(texture, pixel_shader);
-
-	AGraphicsEngine::getInstance()->getImmediateDeviceContext()->drawTriangleStrip(mVertexBuffer->getVertexCount(), 0);
 }
 
 void AGizmo::lookAtCamera(Vector3 cameraPosition)
@@ -120,6 +99,3 @@ void AGizmo::lookAtCamera(Vector3 cameraPosition)
 	updateRotationMatrix(rotationMatrix);
 	
 }
-
-
-

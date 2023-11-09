@@ -44,26 +44,22 @@ void GameObjectManager::update() {
 	}
 }
 
-void GameObjectManager::render(int viewport_width, int viewport_height, AVertexShader* vertex_shader, APixelShader* pixel_shader) {
+void GameObjectManager::render(int viewport_width, int viewport_height) {
 	for (int i = 0; i < mGameObjectList.size(); i++) {
 		if (mGameObjectList[i]->isActive()) mGameObjectList[i]->draw(
 			viewport_width,
 			viewport_height,
-			vertex_shader,
-			pixel_shader,
 			SceneCameraManager::getInstance()->getSceneCameraViewMatrix(),
 			SceneCameraManager::getInstance()->getSceneCameraProjectionMatrix()
 		);
 	}
 }
 
-void GameObjectManager::renderToGameCamera(int viewport_width, int viewport_height, AVertexShader* vertex_shader, APixelShader* pixel_shader, GameCamera* game_camera) {
+void GameObjectManager::renderToGameCamera(int viewport_width, int viewport_height, GameCamera* game_camera) {
 	for (int i = 0; i < mGameObjectList.size(); i++) {
 		if (mGameObjectList[i]->isActive()) mGameObjectList[i]->draw(
 			viewport_width,
 			viewport_height,
-			vertex_shader,
-			pixel_shader,
 			game_camera->getViewMatrix(),
 			game_camera->getProjectionMatrix()
 		);
@@ -75,65 +71,8 @@ void GameObjectManager::addObject(AGameObject* game_object) {
 	mGameObjectTable[game_object->getObjectName()] = game_object;
 }
 
-void GameObjectManager::createObject(PrimitiveType primitive_type, void* shader_byte_code, size_t shader_size) {
-	std::string newName = "";
-
-	switch (primitive_type) {
-	case CUBE: {
-		int cubeCount = -1;
-		AGameObject* cube = nullptr;
-		do {
-			cubeCount++;
-			newName = "Cube " + std::to_string(cubeCount);
-			cube = mGameObjectTable[newName];
-		}
-		while (cube);
-
-		ACube* newCube = new ACube(newName, shader_byte_code, shader_size);
-		addObject(newCube);
-		std::cout << newCube->getObjectName() << " spawned." << std::endl;
-	}
-	break;
-
-	case PLANE: {
-		int planeCount = -1;
-		AGameObject* plane = nullptr;
-		do {
-			planeCount++;
-			newName = "Plane " + std::to_string(planeCount);
-			plane = mGameObjectTable[newName];
-		}
-		while (plane);
-
-		APlane* newPlane = new APlane(newName, shader_byte_code, shader_size);
-		addObject(newPlane);
-		std::cout << newPlane->getObjectName() << " spawned." << std::endl;
-	}
-	break;
-
-	case GAME_CAMERA: {
-		int cameraCount = -1;
-		AGameObject* camera = nullptr;
-		do {
-			cameraCount++;
-			newName = "Camera " + std::to_string(cameraCount);
-			camera = mGameObjectTable[newName];
-		} while (camera);
-
-		GameCamera* newCamera = new GameCamera(newName, shader_byte_code, shader_size);
-		addObject(newCamera);
-		mCameraTable[newName] = newCamera;
-		std::cout << newCamera->getObjectName() << " spawned." << std::endl;
-	}
-	break;
-
-	}
-}
-
 void GameObjectManager::createObject(PrimitiveType primitive_type) {
 	std::string newName = "";
-	void* shaderByteCode = nullptr;
-	size_t shaderSize = 0;
 
 	switch (primitive_type) {
 	case CUBE: {
@@ -146,11 +85,9 @@ void GameObjectManager::createObject(PrimitiveType primitive_type) {
 		}
 		while (cube);
 
-		AGraphicsEngine::getInstance()->compileVertexShader(L"VertexShader.hlsl", "vsmain", &shaderByteCode, &shaderSize);
-		ACube* newCube = new ACube(newName, shaderByteCode, shaderSize);
+		ACube* newCube = new ACube(newName);
 		addObject(newCube);
 		std::cout << newCube->getObjectName() << " spawned." << std::endl;
-		AGraphicsEngine::getInstance()->releaseCompiledVertexShader();
 	}
 	break;
 
@@ -164,11 +101,9 @@ void GameObjectManager::createObject(PrimitiveType primitive_type) {
 		}
 		while (plane);
 
-		AGraphicsEngine::getInstance()->compileVertexShader(L"VertexShader.hlsl", "vsmain", &shaderByteCode, &shaderSize);
-		APlane* newPlane = new APlane(newName, shaderByteCode, shaderSize);
+		APlane* newPlane = new APlane(newName);
 		addObject(newPlane);
 		std::cout << newPlane->getObjectName() << " spawned." << std::endl;
-		AGraphicsEngine::getInstance()->releaseCompiledVertexShader();
 	}
 	break;
 
@@ -181,12 +116,10 @@ void GameObjectManager::createObject(PrimitiveType primitive_type) {
 			camera = mGameObjectTable[newName];
 		} while (camera);
 
-		AGraphicsEngine::getInstance()->compileVertexShader(L"VertexShader.hlsl", "vsmain", &shaderByteCode, &shaderSize);
-		GameCamera* newCamera = new GameCamera(newName, shaderByteCode, shaderSize);
+		GameCamera* newCamera = new GameCamera(newName);
 		addObject(newCamera);
 		mCameraTable[newName] = newCamera;
 		std::cout << newCamera->getObjectName() << " spawned." << std::endl;
-		AGraphicsEngine::getInstance()->releaseCompiledVertexShader();
 	}
 	break;
 

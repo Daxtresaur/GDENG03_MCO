@@ -5,19 +5,14 @@ MCO: Game Engine Feature Replication
 */
 
 #include"AppWindow.h"
-#include"GameViewWindow.h"
 
 int main() {
 	AppWindow scene;
-	GameViewWindow game;
 
-	if (scene.initialize() && game.initialize()) {
+	if (scene.initialize()) {
 		while (scene.isRunning()) {
 			scene.broadcast();
-			game.broadcast();
 		}
-		game.onDestroy();
-		game.release();
 	}
 
 	return 0;

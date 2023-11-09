@@ -5,73 +5,49 @@
 #include"ADeviceContext.h"
 #include<iostream>
 #include"GlobalProperties.h"
+#include"Vector2.h"
+#include<cmath>
 
-GameCamera::GameCamera(std::string name, void* shader_byte_code, size_t shader_size) : ACamera::ACamera(name) {
+struct TextureVertex
+{
+	Vector3 position;
+	Vector2 texcoord;
+};
 
+GameCamera::GameCamera(std::string name) : ACamera::ACamera(name) {
+	//Create texture
+	try {
+		mTexture = new Texture(L"camera.png");
+	}
+	catch (...) {}
 
-	Vertex* currentVertexList = new Vertex[8];
+	void* shaderByteCode = nullptr;
+	size_t shaderSize;
+	AGraphicsEngine::getInstance()->compileVertexShader(L"TextureVertexShader.hlsl", "vsmain", &shaderByteCode, &shaderSize);
 
-	currentVertexList[0] = Vertex(
-		Vector3(-0.5f, -0.5f, -0.5f),
-		Vector3(1.f, 0.f, 0.f),
-		Vector3(0.2f, 0.f, 0.f)
-	);
-	currentVertexList[1] = Vertex(
-		Vector3(-0.5f, 0.5f, -0.5f),
-		Vector3(0.f, 1.f, 0.f),
-		Vector3(0.f, 0.2f, 0.f)
-	);
-	currentVertexList[2] = Vertex(
-		Vector3(0.5f, 0.5f, -0.5f),
-		Vector3(0.f, 1.f, 0.f),
-		Vector3(0.f, 0.2f, 0.f)
-	);
-	currentVertexList[3] = Vertex(
-		Vector3(0.5f, -0.5f, -0.5f),
-		Vector3(1.f, 0.f, 0.f),
-		Vector3(0.2f, 0.f, 0.f)
-	);
-	currentVertexList[4] = Vertex(
-		Vector3(0.5f, -0.5f, 0.5f),
-		Vector3(0.f, 0.f, 1.f),
-		Vector3(0.f, 0.f, 0.2f)
-	);
-	currentVertexList[5] = Vertex(
-		Vector3(0.5f, 0.5f, 0.5f),
-		Vector3(1.f, 1.f, 0.f),
-		Vector3(0.2f, 0.2f, 0.f)
-	);
-	currentVertexList[6] = Vertex(
-		Vector3(-0.5f, 0.5f, 0.5f),
-		Vector3(1.f, 1.f, 0.f),
-		Vector3(0.2f, 0.2f, 0.f)
-	);
-	currentVertexList[7] = Vertex(
-		Vector3(-0.5f, -0.5f, 0.5f),
-		Vector3(0.f, 0.f, 1.f),
-		Vector3(0.f, 0.f, 0.2f)
-	);
-
-	mVertexBuffer = AGraphicsEngine::getInstance()->createVertexBuffer();
-	mVertexBuffer->load(currentVertexList, sizeof(Vertex), 8, shader_byte_code, shader_size);
-
-	unsigned int indexList[] = {
-		0, 1, 2,
-		2, 3, 0,
-		4, 5, 6,
-		6, 7, 4,
-		1, 6, 5,
-		5, 2, 1,
-		7, 0, 3,
-		3, 4, 7,
-		3, 2, 5,
-		5, 4, 3,
-		7, 6, 1,
-		1, 0, 7
+	Vector3 positionList[] = {
+		Vector3(-0.5f, -0.5f, 0.f),
+		Vector3(-0.5f, 0.5f, 0.f),
+		Vector3(0.5f, -0.5f, -0.f),
+		Vector3(0.5f, 0.5f, 0.f)
 	};
 
-	mIndexBuffer = AGraphicsEngine::getInstance()->createIndexBuffer();
-	mIndexBuffer->load(indexList, ARRAYSIZE(indexList));
+	Vector2 texcoordList[] = {
+		Vector2(0.f, 0.f),
+		Vector2(0.0f, 1.f),
+		Vector2(1.f, 0.f),
+		Vector2(1.f, 1.f)
+	};
+
+	TextureVertex vertexList[] = {
+		{positionList[0], texcoordList[3]},
+		{positionList[1], texcoordList[2]},
+		{positionList[2], texcoordList[1]},
+		{positionList[3], texcoordList[0]},
+	};
+
+	mVertexBuffer = AGraphicsEngine::getInstance()->createVertexBuffer();
+	mVertexBuffer->load(vertexList, sizeof(TextureVertex), 4, shaderByteCode, shaderSize);
 
 	constant datablock;
 	datablock.coefficient = 0.f;
@@ -79,16 +55,23 @@ GameCamera::GameCamera(std::string name, void* shader_byte_code, size_t shader_s
 	mConstantBuffer = AGraphicsEngine::getInstance()->createConstantBuffer();
 	mConstantBuffer->load(&datablock, sizeof(constant));
 
-	delete[] currentVertexList;
-	InputManager::getInstance()->addListener(this);
+	mVertexShader = AGraphicsEngine::getInstance()->createVertexShader(shaderByteCode, shaderSize);
+	AGraphicsEngine::getInstance()->releaseCompiledVertexShader();
 
-	this->setScale(0.1f, 0.1f, 0.1f);
+	AGraphicsEngine::getInstance()->compilePixelShader(L"TexturePixelShader.hlsl", "psmain", &shaderByteCode, &shaderSize);
+	mPixelShader = AGraphicsEngine::getInstance()->createPixelShader(shaderByteCode, shaderSize);
+	AGraphicsEngine::getInstance()->releaseCompiledPixelShader();
+
+	InputManager::getInstance()->addListener(this);
 }
 
 GameCamera::~GameCamera() {
 	mVertexBuffer->release();
-	mIndexBuffer->release();
 	mConstantBuffer->release();
+
+	mVertexShader->release();
+	mPixelShader->release();
+	delete mTexture;
 
 	InputManager::getInstance()->removeListener(this);
 }
@@ -241,7 +224,9 @@ void GameCamera::update(float delta_time) {
 	}
 }
 
-void GameCamera::draw(int width, int height, AVertexShader* vertex_shader, APixelShader* pixel_shader, Matrix4x4 view_matrix, Matrix4x4 projection_matrix) {
+void GameCamera::draw(int width, int height, Matrix4x4 view_matrix, Matrix4x4 projection_matrix) {
+	faceSceneCamera(SceneCameraManager::getInstance()->getSceneCamera()->getLocalPosition());
+
 	constant shaderNumbers;
 
 	shaderNumbers.worldMatrix = this->getLocalMatrix();
@@ -251,15 +236,15 @@ void GameCamera::draw(int width, int height, AVertexShader* vertex_shader, APixe
 
 	mConstantBuffer->update(AGraphicsEngine::getInstance()->getImmediateDeviceContext(), &shaderNumbers);
 
-	AGraphicsEngine::getInstance()->getImmediateDeviceContext()->setConstantBuffer(mConstantBuffer, vertex_shader);
-	AGraphicsEngine::getInstance()->getImmediateDeviceContext()->setConstantBuffer(mConstantBuffer, pixel_shader);
+	AGraphicsEngine::getInstance()->getImmediateDeviceContext()->setConstantBuffer(mConstantBuffer, mVertexShader);
+	AGraphicsEngine::getInstance()->getImmediateDeviceContext()->setConstantBuffer(mConstantBuffer, mPixelShader);
 
-	AGraphicsEngine::getInstance()->getImmediateDeviceContext()->setVertexShader(vertex_shader);
-	AGraphicsEngine::getInstance()->getImmediateDeviceContext()->setPixelShader(pixel_shader);
+	AGraphicsEngine::getInstance()->getImmediateDeviceContext()->setVertexShader(mVertexShader);
+	AGraphicsEngine::getInstance()->getImmediateDeviceContext()->setPixelShader(mPixelShader);
 	AGraphicsEngine::getInstance()->getImmediateDeviceContext()->setVertexBuffer(mVertexBuffer);
-	AGraphicsEngine::getInstance()->getImmediateDeviceContext()->setIndexBuffer(mIndexBuffer);
+	AGraphicsEngine::getInstance()->getImmediateDeviceContext()->setTexture(mTexture, mPixelShader);
 
-	AGraphicsEngine::getInstance()->getImmediateDeviceContext()->drawIndexedTriangleList(mIndexBuffer->getIndexCount(), 0, 0);
+	AGraphicsEngine::getInstance()->getImmediateDeviceContext()->drawTriangleStrip(mVertexBuffer->getVertexCount(), 0);
 }
 
 void GameCamera::onPress(int key) {}
@@ -275,3 +260,29 @@ void GameCamera::onLMBRelease(const Point mouse_position) {}
 void GameCamera::onRMBPress(const Point mouse_position) {}
 
 void GameCamera::onRMBRelease(const Point mouse_position) {}
+
+void GameCamera::faceSceneCamera(Vector3 scene_camera_position) {
+	// Calculate the forward direction (from the gizmo to the camera)
+	Vector3 forward = scene_camera_position - mLocalPosition;
+	forward.Normalize();
+
+	// Assuming left-handed coordinate system, "up" is (0, 1, 0)
+	Vector3 up(0, 1, 0);
+
+	// Calculate the right vector by taking the cross product of "up" and "forward"
+	Vector3 right = Vector3::cross(up, forward);
+	right.Normalize();
+
+	// Calculate the new "up" vector by taking the cross product of "forward" and "right"
+	up = Vector3::cross(forward, right);
+	up.Normalize();
+
+	// Create a rotation matrix based on the calculated right, up, and forward vectors
+	Matrix4x4 rotationMatrix;
+	rotationMatrix.setRightVector(right);
+	rotationMatrix.setUpVector(up);
+	rotationMatrix.setForwardVector(forward);
+
+	// Set the gizmo's world matrix to the new rotation matrix
+	updateRotationMatrix(rotationMatrix);
+}

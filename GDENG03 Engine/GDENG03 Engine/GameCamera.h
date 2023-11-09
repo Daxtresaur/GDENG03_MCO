@@ -3,16 +3,19 @@
 #include"AVertexBuffer.h"
 #include"AIndexBuffer.h"
 #include"AConstantBuffer.h"
-#include "AGizmo.h"
+#include"Texture.h"
+#include<DirectXMath.h>
+
+using namespace DirectX;
 
 class GameCamera : public ACamera
 {
 public:
-	GameCamera(std::string name, void* shader_byte_code, size_t shader_size);
+	GameCamera(std::string name);
 	~GameCamera();
 
 	void update(float delta_time) override;
-	void draw(int width, int height, AVertexShader* vertex_shader, APixelShader* pixel_shader, Matrix4x4 view_matrix, Matrix4x4 projection_matrix) override;
+	void draw(int width, int height, Matrix4x4 view_matrix, Matrix4x4 projection_matrix) override;
 
 	void onPress(int key) override;
 	void onRelease(int key) override;
@@ -23,11 +26,14 @@ public:
 	void onRMBRelease(const Point mouse_position) override;
 
 private:
-	AVertexBuffer* mVertexBuffer;
-	AIndexBuffer* mIndexBuffer;
-	AConstantBuffer* mConstantBuffer;
+	void faceSceneCamera(Vector3 scene_camera_position);
 
-	AGizmo* gizmo;
+	AVertexBuffer* mVertexBuffer;
+	AConstantBuffer* mConstantBuffer;
+	Texture* mTexture = nullptr;
+
+	AVertexShader* mVertexShader;
+	APixelShader* mPixelShader;
 
 	float mTranslationSpeed = 1.f;
 	float mRotationSpeed = 1.f;

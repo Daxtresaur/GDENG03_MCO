@@ -1,5 +1,6 @@
 #include"GameViewWindow.h"
 #include"GlobalProperties.h"
+#include<iostream>
 
 GameViewWindow::GameViewWindow() {
 }
@@ -15,17 +16,6 @@ void GameViewWindow::onCreate() {
 	UINT width = windowRect.right - windowRect.left;
 	UINT height = windowRect.bottom - windowRect.top;
 	mSwapChain->initialize(this->mWindowHandle, width, height);
-
-	void* shaderByteCode = nullptr;
-	size_t shaderSize;
-
-	AGraphicsEngine::getInstance()->compileVertexShader(L"VertexShader.hlsl", "vsmain", &shaderByteCode, &shaderSize);
-	mVertexShader = AGraphicsEngine::getInstance()->createVertexShader(shaderByteCode, shaderSize);
-	AGraphicsEngine::getInstance()->releaseCompiledVertexShader();
-
-	AGraphicsEngine::getInstance()->compilePixelShader(L"PixelShader.hlsl", "psmain", &shaderByteCode, &shaderSize);
-	mPixelShader = AGraphicsEngine::getInstance()->createPixelShader(shaderByteCode, shaderSize);
-	AGraphicsEngine::getInstance()->releaseCompiledPixelShader();
 }
 
 void GameViewWindow::onUpdate() {
@@ -57,13 +47,11 @@ void GameViewWindow::onUpdate() {
 	UINT height = windowRect.bottom - windowRect.top;
 	AGraphicsEngine::getInstance()->getImmediateDeviceContext()->setViewportSize(width, height);
 
-	if (gameCam) GameObjectManager::getInstance()->renderToGameCamera(width, height, mVertexShader, mPixelShader, gameCam);
+	if (gameCam) GameObjectManager::getInstance()->renderToGameCamera(width, height, gameCam);
 	mSwapChain->present(false);
 }
 
 void GameViewWindow::onDestroy() {
 	GWindow::onDestroy();
-	mSwapChain->release();
-	mVertexShader->release();
-	mPixelShader->release();
+	if (mSwapChain->release()) std::cout << "Released game view swap chain." << std::endl;
 }

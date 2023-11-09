@@ -35,7 +35,7 @@ public:
 	virtual void onRMBPress(const Point mouse_position) = 0;
 	virtual void onRMBRelease(const Point mouse_position) = 0;
 
-	virtual void draw(int width, int height, AVertexShader* vertex_shader, APixelShader* pixel_shader, Matrix4x4 view_matrix, Matrix4x4 projection_matrix) = 0;
+	virtual void draw(int width, int height, Matrix4x4 view_matrix, Matrix4x4 projection_matrix) = 0;
 
 protected:
 	Matrix4x4 mProjectionMatrix;

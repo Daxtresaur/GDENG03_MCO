@@ -1,6 +1,5 @@
 #include"AppWindow.h"
-
-#include <DirectXTex.h>
+#include"DirectXTex.h"
 #include<Windows.h>
 #include"imgui.h"
 #include"imgui_impl_dx11.h"
@@ -8,8 +7,6 @@
 #include"imgui_stdlib.h"
 #include"GlobalProperties.h"
 #include<iostream>
-
-#include <iostream>
 
 using namespace std;
 
@@ -23,7 +20,6 @@ AppWindow::AppWindow() {}
 AppWindow::~AppWindow() {}
 
 void AppWindow::onCreate() {
-
 	AWindow::onCreate();
 	GameObjectManager::initialize();
 	AGraphicsEngine::getInstance()->initialize();
@@ -34,16 +30,11 @@ void AppWindow::onCreate() {
 	UINT height = windowRect.bottom - windowRect.top;
 	mSwapChain->initialize(this->mWindowHandle, width, height);
 
-	sceneCamera = new SceneCamera("UnregisteredHyperCam2");
+	SceneCamera* sceneCamera = new SceneCamera("UnregisteredHyperCam2");
 	sceneCamera->setPosition(0.f, 0.f, 0.f);
 	sceneCamera->setRotation(0.f, 0.f, 0.f);
 	sceneCamera->setPerspectiveProjectionMatrix(1.57f, (float)width, (float)height, 0.1f, 100.f);
 	SceneCameraManager::getInstance()->setSceneCamera(sceneCamera);
-
-	void* shaderByteCode = nullptr;
-	size_t shaderSize;
-	AGraphicsEngine::getInstance()->compileVertexShader(L"VertexShader.hlsl", "vsmain", &shaderByteCode, &shaderSize);
-	mVertexShader = AGraphicsEngine::getInstance()->createVertexShader(shaderByteCode, shaderSize);
 
 	GameObjectManager::getInstance()->createObject(GameObjectManager::PLANE);
 	APlane* object = (APlane*)GameObjectManager::getInstance()->findObjectByName("Plane 0");
@@ -52,29 +43,9 @@ void AppWindow::onCreate() {
 		object->setPosition(0.f, -1.f, 0.f);
 	}
 
-	AGraphicsEngine::getInstance()->releaseCompiledVertexShader();
-	AGraphicsEngine::getInstance()->compilePixelShader(L"PixelShader.hlsl", "psmain", &shaderByteCode, &shaderSize);
-	mPixelShader = AGraphicsEngine::getInstance()->createPixelShader(shaderByteCode, shaderSize);
-	AGraphicsEngine::getInstance()->releaseCompiledPixelShader();
-
 	UIManager::initialize(this->mWindowHandle);
 
-
-	//Create vertex shaders with Texture
-	void* textureShaderCode = nullptr;
-	size_t textureShadderSize;
-	AGraphicsEngine::getInstance()->compileVertexShader(L"TextureVertexShader.hlsl", "vsmain", &textureShaderCode, &textureShadderSize);
-	textureVertexShader = AGraphicsEngine::getInstance()->createVertexShader(textureShaderCode, textureShadderSize);
-
-	//Create Gizmo
-	gizmo = new AGizmo("Gizmo", textureShaderCode, textureShadderSize);
-
-
-	//Create pixel shader with texture
-	AGraphicsEngine::getInstance()->releaseCompiledVertexShader();
-	AGraphicsEngine::getInstance()->compilePixelShader(L"TexturePixelShader.hlsl", "psmain", &textureShaderCode, &textureShadderSize);
-	texturePixelShader = AGraphicsEngine::getInstance()->createPixelShader(textureShaderCode, textureShadderSize);
-	AGraphicsEngine::getInstance()->releaseCompiledPixelShader();
+	mGameView.initialize();
 }
 
 void AppWindow::onUpdate() {
@@ -97,25 +68,21 @@ void AppWindow::onUpdate() {
 	SceneCameraManager::getInstance()->update();
 
 	GameObjectManager::getInstance()->update();
-	GameObjectManager::getInstance()->render(width, height, mVertexShader, mPixelShader);
-
-	//gizmo test
-	gizmo->lookAtCamera(sceneCamera->getLocalPosition());
-	gizmo->draw(width, height, textureVertexShader, texturePixelShader, SceneCameraManager::getInstance()->getSceneCameraViewMatrix(),SceneCameraManager::getInstance()->getSceneCameraProjectionMatrix());
+	GameObjectManager::getInstance()->render(width, height);
 
 	UIManager::getInstance()->draw();
 	mSwapChain->present(false);
+
+	mGameView.broadcast();
 }
 
 void AppWindow::onDestroy() {
 	AWindow::onDestroy();
+	mGameView.release();
 	mSwapChain->release();
 
 	InputManager::destroy();
 	SceneCameraManager::destroy();
-
-	mVertexShader->release();
-	mPixelShader->release();
 
 	GameObjectManager::destroy();
 	UIManager::destroy();

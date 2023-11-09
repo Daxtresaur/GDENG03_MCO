@@ -34,6 +34,4 @@ public:
 
 private:
 	ASwapChain* mSwapChain;
-	AVertexShader* mVertexShader;
-	APixelShader* mPixelShader;
 };
