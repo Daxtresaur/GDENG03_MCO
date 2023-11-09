@@ -22,7 +22,6 @@
 #include"Matrix4x4.h"
 #include"Randomizer.h"
 #include<vector>
-#include"AGizmo.h"
 
 class AppWindow : public AWindow
 {
