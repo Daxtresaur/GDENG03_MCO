@@ -1,5 +1,5 @@
 #pragma once
-#include"SceneCamera.h"
+#include"Camera.h"
 
 class SceneCameraManager
 {
@@ -7,7 +7,7 @@ public:
 	static SceneCameraManager* getInstance();
 	static void destroy();
 
-	void setSceneCamera(SceneCamera* scene_camera);
+	void setSceneCamera(Camera* scene_camera);
 	void update();
 
 	Matrix4x4 getSceneCameraViewMatrix();
@@ -20,5 +20,5 @@ private:
 	SceneCameraManager& operator =(SceneCameraManager const&) {};
 	static SceneCameraManager* instance;
 
-	SceneCamera* mSceneCamera = nullptr;
+	Camera* mSceneCamera = nullptr;
 };

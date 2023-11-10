@@ -12,7 +12,7 @@ void SceneCameraManager::destroy() {
 	delete instance->mSceneCamera;
 }
 
-void SceneCameraManager::setSceneCamera(SceneCamera* scene_camera) {
+void SceneCameraManager::setSceneCamera(Camera* scene_camera) {
 	mSceneCamera = scene_camera;
 }
 
@@ -25,7 +25,7 @@ Matrix4x4 SceneCameraManager::getSceneCameraViewMatrix() {
 }
 
 Matrix4x4 SceneCameraManager::getSceneCameraProjectionMatrix() {
-	return mSceneCamera->getProjectionMatrix();
+	return mSceneCamera->getViewMatrix();
 }
 
 SceneCameraManager::SceneCameraManager() {}

@@ -1,5 +1,4 @@
 #include "InspectorWindow.h"
-#include "MathUtils.h"
 
 InspectorWindow::InspectorWindow(std::string name) : AUIScreen(name)
 {
@@ -36,7 +35,7 @@ void InspectorWindow::drawUI()
 		Vector3D sca = selectedObject->getLocalScale();
 
 		float position[] = { pos.x, pos.y, pos.z };
-		float rotation[] = { MathUtils::toDegrees(rot.x), MathUtils::toDegrees(rot.y), MathUtils::toDegrees(rot.z) };
+		float rotation[] = { rot.x, rot.y, rot.z };
 		float scale[] = { sca.x, sca.y, sca.z };
 
 		ImGui::DragFloat3("Position", position, 0.05f);
@@ -44,7 +43,7 @@ void InspectorWindow::drawUI()
 		ImGui::DragFloat3("Scale", scale, 0.05f);
 
 		selectedObject->setPosition(position[0], position[1], position[2]);
-		selectedObject->setRotation(MathUtils::toRadians(rotation[0]), MathUtils::toRadians(rotation[1]), MathUtils::toRadians(rotation[2]));
+		selectedObject->setRotation(rotation[0], rotation[1], rotation[2]);
 		selectedObject->setScale(scale[0], scale[1], scale[2]);
 
 	}

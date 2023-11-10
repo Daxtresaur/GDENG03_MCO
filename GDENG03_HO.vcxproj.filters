@@ -165,12 +165,6 @@
     <ClCompile Include="imgui\imgui_widgets.cpp">
       <Filter>GameEngine\imgui</Filter>
     </ClCompile>
-    <ClCompile Include="EngineProfiler.cpp" />
-    <ClCompile Include="GameObjectManager.cpp" />
-    <ClCompile Include="InspectorWindow.cpp" />
-    <ClCompile Include="SceneOutliner.cpp" />
-    <ClCompile Include="ToolBar.cpp" />
-    <ClCompile Include="SceneCamera.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AppWindow.h">
@@ -239,6 +233,9 @@
     <ClInclude Include="SceneCameraManager.h">
       <Filter>GameEngine\Graphics Engine\Camera</Filter>
     </ClInclude>
+    <ClInclude Include="AGameObject.h">
+      <Filter>GameEngine\Graphics Engine\Camera</Filter>
+    </ClInclude>
     <ClInclude Include="Quad.h">
       <Filter>GameEngine\Graphics Engine\GameObjects</Filter>
     </ClInclude>
@@ -275,15 +272,6 @@
     <ClInclude Include="imgui\imstb_truetype.h">
       <Filter>GameEngine\imgui</Filter>
     </ClInclude>
-    <ClInclude Include="EngineProfiler.h" />
-    <ClInclude Include="GameObjectManager.h" />
-    <ClInclude Include="InspectorWindow.h" />
-    <ClInclude Include="SceneOutliner.h" />
-    <ClInclude Include="ToolBar.h" />
-    <ClInclude Include="AGameObject.h">
-      <Filter>GameEngine\Graphics Engine\GameObjects</Filter>
-    </ClInclude>
-    <ClInclude Include="SceneCamera.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="VertexShader.hlsl">

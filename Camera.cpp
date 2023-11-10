@@ -12,10 +12,56 @@ Camera::~Camera()
 	InputSystem::getInstance()->removeListener(this);
 }
 
+void Camera::update(float deltaTime)
+{
+		Vector3D newPosition = this->getLocalPosition();
+		float movementSpeed = 5.f;
+		float movementScalar;
+
+		
+
+		if (InputSystem::getInstance()->isKeyDown('W'))
+		{
+			movementScalar = deltaTime * movementSpeed * 1.f;
+			newPosition.z += movementScalar;
+			this->setPosition(newPosition);
+
+			updateViewMatrix();
+		}
+
+		else if (InputSystem::getInstance()->isKeyDown('S'))
+		{
+			movementScalar = deltaTime * movementSpeed * -1.f;
+			newPosition.z += movementScalar;
+			this->setPosition(newPosition);
+
+			updateViewMatrix();
+		}
+
+		else if (InputSystem::getInstance()->isKeyDown('D'))
+		{
+			movementScalar = deltaTime * movementSpeed * 1.f;
+			newPosition.x += movementScalar;
+			this->setPosition(newPosition);
+
+			updateViewMatrix();
+		}
+
+		else if (InputSystem::getInstance()->isKeyDown('A'))
+		{
+			movementScalar = deltaTime * movementSpeed * -1.f;
+			newPosition.x += movementScalar;
+			this->setPosition(newPosition);
+
+			updateViewMatrix();
+		}
+	
+}
+
 Matrix4x4 Camera::getViewMatrix()
 {
 	Matrix4x4 viewMatrix = this->localMatrix;
-	viewMatrix.inverse();
+	//viewMatrix.inverse();
 	return viewMatrix;
 }
 
@@ -88,8 +134,8 @@ void Camera::onMouseMove(const Point deltaPos)
 	}
 
 	Vector3D newRotation = this->getLocalRotation();
-	newRotation.y += (float)deltaPos.getX() * 0.01f;
-	newRotation.x += (float)deltaPos.getY() * 0.01f;
+	newRotation.y -= (float)deltaPos.getX() * 0.1f * EngineTime::getDeltaTime();
+	newRotation.x -= (float)deltaPos.getY() * 0.1f * EngineTime::getDeltaTime();
 
 	this->setRotation(newRotation);
 
@@ -136,5 +182,7 @@ void Camera::updateViewMatrix()
 	worldCamMatrix.rotate(1, localRotation.y);
 	worldCamMatrix.rotate(2, localRotation.z);
 	worldCamMatrix.translate(this->getLocalPosition());
+	worldCamMatrix.inverse();
 	this->localMatrix = worldCamMatrix;
+
 }

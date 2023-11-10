@@ -3,7 +3,6 @@
 
 Matrix4x4::Matrix4x4()
 {
-	this->setIdentity();
 }
 
 Matrix4x4::~Matrix4x4()
@@ -217,11 +216,6 @@ void Matrix4x4::rotate(int axisOfRotation, float theta)
 Vector3D Matrix4x4::getZDirection()
 {
 	return Vector3D(this->matrix[2][0], this->matrix[2][1], this->matrix[2][2]);
-}
-
-Vector3D Matrix4x4::getYDirection()
-{
-	return Vector3D(this->matrix[1][0], this->matrix[1][1], this->matrix[1][2]);
 }
 
 Vector3D Matrix4x4::getXDirection()
