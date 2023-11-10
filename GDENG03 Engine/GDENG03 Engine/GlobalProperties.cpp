@@ -1,7 +1,7 @@
 #include"GlobalProperties.h"
 
-int GlobalProperties::WINDOW_WIDTH = 1440;
-int GlobalProperties::WINDOW_HEIGHT = 900;
+int GlobalProperties::WINDOW_WIDTH = 1280;
+int GlobalProperties::WINDOW_HEIGHT = 720;
 int GlobalProperties::GAME_VIEW_WIDTH = 853;
 int GlobalProperties::GAME_VIEW_HEIGHT = 480;
 
