@@ -11,7 +11,7 @@ public:
 	Camera(std::string name);
 	~Camera();
 
-	void update(float deltaTime) override;
+	virtual void update(float deltaTime) = 0;
 	Matrix4x4 getViewMatrix();
 	Matrix4x4 getProjectionMatrix();
 
@@ -30,7 +30,7 @@ public:
 
 	void release() override;
 
-private:
+protected:
 	void updateViewMatrix();
 
 	bool MouseRightClicked = false;
